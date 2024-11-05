@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import {
+  AdminAddProduct,
   AdminHome,
   AdminReport,
   Layout,
@@ -23,13 +24,13 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="*" element={<NoPage />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/homedetails" element={<HomeDetails/>}/>
-      <Route path='/homedetails/searchbyname' element={<SearchByName/>} />
-      <Route path='/homedetails/fooddetails' element={<FoodDetails/>}/>
-      <Route path='/homedetails/allcategories' element={<AllCategories/>}/>
-      <Route path='/homedetails/fooddetails/cart' element={<Cart/>}/>
+      <Route path="/homedetails" element={<HomeDetails />} />
+      <Route path="/homedetails/searchbyname" element={<SearchByName />} />
+      <Route path="/homedetails/fooddetails" element={<FoodDetails />} />
+      <Route path="/homedetails/allcategories" element={<AllCategories />} />
+      <Route path="/homedetails/fooddetails/cart" element={<Cart />} />
 
-
+      <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin" element={<AdminHome />}>
         <Route path="report" element={<AdminReport />} />
       </Route>
