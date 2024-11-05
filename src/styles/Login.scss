@@ -1,0 +1,19 @@
+#form-login {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .btn-submit {
+    font-weight: 700;
+    color: white;
+    background-color: #e53935;
+    text-transform: uppercase;
+  }
+}
+
+.rule {
+  span {
+    color: #3567e7;
+  }
+}
