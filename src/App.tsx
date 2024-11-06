@@ -11,9 +11,10 @@ import {
 import './App.css';
 import HomeDetails from './pages/HomeDetails';
 import SearchByName from './pages/SearchByName';
-import FoodDetails from './pages/FoodDetails';
+import FoodDetails from './pages/Food';
 import AllCategories from './pages/AllCategories';
-import Cart from '../src/pages/Cart';
+import Cart from './pages/FoodDetails';
+import FoodDetailsSearch from './pages/FoodSearch';
 
 function App() {
   return (
@@ -25,9 +26,10 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/homedetails" element={<HomeDetails/>}/>
       <Route path='/homedetails/searchbyname' element={<SearchByName/>} />
-      <Route path='/homedetails/fooddetails' element={<FoodDetails/>}/>
+      <Route path='/homedetails/food' element={<FoodDetails/>}/>
+      <Route path='/homedetails/foodsearch' element={<FoodDetailsSearch/>}/>
       <Route path='/homedetails/allcategories' element={<AllCategories/>}/>
-      <Route path='/homedetails/fooddetails/cart' element={<Cart/>}/>
+      <Route path='/homedetails/food/fooddetails' element={<Cart/>}/>
 
 
       <Route path="/admin" element={<AdminHome />}>

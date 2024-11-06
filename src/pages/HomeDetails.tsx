@@ -67,7 +67,7 @@ function HomeDetails() {
         {categories.map((item: any) => (
           <CardCategory
             imageSrc={`${process.env.REACT_APP_API_URL}/${item?.image}`}
-            navigateTo={`/homedetails/fooddetails`}
+            navigateTo={`/homedetails/food`}
             textCategory={item?.name}
             category = {item?.id}
           ></CardCategory>
