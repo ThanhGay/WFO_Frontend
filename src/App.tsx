@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import {
+  AdminAddProduct,
   AdminHome,
   AdminReport,
   Layout,
@@ -35,7 +36,7 @@ function App() {
       <Route path='/cart' element={<Cart/>}/>
       <Route path='/payment' element={<Payment />} />
 
-
+      <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin" element={<AdminHome />}>
         <Route path="report" element={<AdminReport />} />
       </Route>
