@@ -11,10 +11,12 @@ import {
 import './App.css';
 import HomeDetails from './pages/HomeDetails';
 import SearchByName from './pages/SearchByName';
-import FoodDetails from './pages/Food';
 import AllCategories from './pages/AllCategories';
-import Cart from './pages/FoodDetails';
-import FoodDetailsSearch from './pages/FoodSearch';
+import Food from './pages/Food';
+import FoodSearch from './pages/FoodSearch';
+import FoodDetails from './pages/FoodDetails';
+import Cart from './pages/Cart';
+import Payment from './pages/Payment';
 
 function App() {
   return (
@@ -26,10 +28,12 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/homedetails" element={<HomeDetails/>}/>
       <Route path='/homedetails/searchbyname' element={<SearchByName/>} />
-      <Route path='/homedetails/food' element={<FoodDetails/>}/>
-      <Route path='/homedetails/foodsearch' element={<FoodDetailsSearch/>}/>
+      <Route path='/homedetails/food' element={<Food/>}/>
+      <Route path='/homedetails/foodsearch' element={<FoodSearch/>}/>
       <Route path='/homedetails/allcategories' element={<AllCategories/>}/>
-      <Route path='/homedetails/food/fooddetails' element={<Cart/>}/>
+      <Route path='/homedetails/food/fooddetails' element={<FoodDetails/>}/>
+      <Route path='/cart' element={<Cart/>}/>
+      <Route path='/payment' element={<Payment />} />
 
 
       <Route path="/admin" element={<AdminHome />}>
