@@ -82,11 +82,12 @@ function Food() {
       <div className="  grid grid-cols-2 gap-4">
         {product.map((item: any) => (
           <CartFood
-            imageSrc={Burger1}
+          key={item.id}
+            imageSrc={item?.image ? `${process.env.REACT_APP_API_URL}/${item.image}`: Burger1}
             navigateTo={`/homedetails/food/fooddetails`}
             textMeal={item.name}
             textSize={item.size}
-            textPrice={item.categoryId}
+            textPrice={item.price.toLocaleString('VN-vi')}
             textRestaurant={item.description}
             id={item.id}
           />

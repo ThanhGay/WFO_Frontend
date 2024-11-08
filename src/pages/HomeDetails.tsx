@@ -66,11 +66,12 @@ function HomeDetails() {
       <div className="flex flex-row overflow-x-auto space-x-4 whitespace-nowrap no-scrollbar">
         {categories.map((item: any) => (
           <CardCategory
+          key={item?.id}
             imageSrc={`${process.env.REACT_APP_API_URL}/${item?.image}`}
             navigateTo={`/homedetails/food`}
             textCategory={item?.name}
             category = {item?.id}
-          ></CardCategory>
+            />
         ))}
       </div>
 

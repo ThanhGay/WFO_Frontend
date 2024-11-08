@@ -77,6 +77,9 @@ function AllCategories() {
   const handleSearch = () => {
     navigate('/homedetails/searchbyname');
   };
+  const handleCart = () => {
+    navigate('/cart');
+  };
   return (
     <div className=" py-3 px-3">
       <div className="flex flex-row justify-between ">
@@ -85,7 +88,7 @@ function AllCategories() {
         </div>
         <div className="flex flex-row gap-3 justify-center">
           <img className="size-10" src={Search} onClick={handleSearch} />
-          <img className="size-10" src={Cart1} />
+          <img className="size-10" src={Cart1} onClick={handleCart} />
         </div>
       </div>
       <div className="  grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar h-[530px]">
