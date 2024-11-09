@@ -1,6 +1,6 @@
 import axios from 'axios';
 export const apiAddCart = async (args: { productId: number; quantity: number; note:string | null; }, token: string) => {
-  const url = `${process.env.REACT_APP_API_URL}/api/cart`;
+  const url = `${process.env.REACT_APP_API_URL}/api/cart/add-to-cart`;
 
   const reqBody = {
     productId: args.productId,
@@ -22,7 +22,7 @@ export const apiGetCart = async (
 
   token: string
 ) => {
-  const url = `${process.env.REACT_APP_API_URL}/api/cart`;
+  const url = `${process.env.REACT_APP_API_URL}/api/cart/my-cart`;
 
   const config = {
     headers: {

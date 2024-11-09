@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Button, ConfigProvider, Form, Input } from 'antd';
-import logo from '../img/logo 1.png';
+import logo from '../../img/logo 1.png';
 import { Link, useNavigate } from 'react-router-dom';
-import search1 from '../img/search1.png';
-import bell from '../img/bell.png';
-import restaurant from '../img/Restaurant.png';
-import right_arrow from '../img/right-arrow.png';
-import CardCategory from '../components/card/CardCategory';
-import CardRestaurant from '../components/card/CardRestaurant';
+import search1 from '../../img/search1.png';
+import bell from '../../img/bell.png';
+import restaurant from '../../img/Restaurant.png';
+import right_arrow from '../../img/right-arrow.png';
+import CardCategory from '../../components/card/CardCategory';
+import CardRestaurant from '../../components/card/CardRestaurant';
 import { useState } from 'react';
-import { apiCategories } from '../api/product';
+import { apiCategories } from '../../api/product';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Home from '@mui/icons-material/Home';
@@ -27,6 +27,7 @@ function HomeDetails() {
     setValue(newValue);
     localStorage.setItem('bottomNavValue', newValue);
   };
+  
   const [categories, setCategories] = useState([]);
   const handleNavigation = (path: string) => {
     navigate(path);

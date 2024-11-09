@@ -1,32 +1,32 @@
-import BackHeader from '../components/header/BackHeader';
+import BackHeader from '../../components/header/BackHeader';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import Search from '../img/search.png';
-import Cart1 from '../img/Cart1.png';
-import CartFood from '../components/card/CartFood';
-import Burger1 from '../img/Burger1.png';
-import CardRestaurant from '../components/card/CardRestaurant';
-import Restaurant from '../img/Restaurant.png';
+import Search from '../../img/search.png';
+import Cart1 from '../../img/Cart1.png';
+import CartFood from '../../components/card/CartFood';
+import Burger1 from '../../img/Burger1.png';
+import CardRestaurant from '../../components/card/CardRestaurant';
+import Restaurant from '../../img/Restaurant.png';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { apiProduct, apiSearch } from '../api/product';
-import CardCategory from '../components/card/CardCategory';
+import { apiProduct, apiProductGetID } from '../../api/product';
+import CardCategory from '../../components/card/CardCategory';
 
-function FoodSearch() {
+function Food() {
   const [option, setOption] = useState('');
   const [product, setProduct] = useState([]);
   const location = useLocation();
-  const { food } = location.state || {};
+  const { category } = location.state || {};
   const callAPI = async () => {
-    const dataRes = await apiSearch(food);
+    const dataRes = await apiProduct(category);
     setProduct(dataRes.items);
   };
   useEffect(() => {
     callAPI();
-  }, [food]);
+  }, [category]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
@@ -83,10 +83,10 @@ function FoodSearch() {
         {product.map((item: any) => (
           <CartFood
           key={item.id}
-            imageSrc={item?.image ? `${process.env.REACT_APP_API_URL}/${item.image}` : Burger1}
+            imageSrc={item?.image ? `${process.env.REACT_APP_API_URL}/${item.image}`: Burger1}
             navigateTo={`/homedetails/food/fooddetails`}
-            textSize={item.size}
             textMeal={item.name}
+            textSize={item.size}
             textPrice={item.price.toLocaleString('VN-vi')}
             textRestaurant={item.description}
             id={item.id}
@@ -104,4 +104,4 @@ function FoodSearch() {
   );
 }
 
-export default FoodSearch;
+export default Food;

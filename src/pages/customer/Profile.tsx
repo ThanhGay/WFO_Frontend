@@ -4,8 +4,8 @@ import { Avatar, Button, Form, Input, message, Popover } from 'antd';
 import { EllipsisOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
-import { useAppSelector } from '../redux/hook';
-import BackHeader from '../components/header/BackHeader';
+import { useAppSelector } from '../../redux/hook';
+import BackHeader from '../../components/header/BackHeader';
 
 function calcAge(birthDateStr: string) {
   const now = moment();

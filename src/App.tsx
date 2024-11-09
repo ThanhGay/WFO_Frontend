@@ -10,14 +10,14 @@ import {
   Signup
 } from './pages';
 import './App.css';
-import HomeDetails from './pages/HomeDetails';
-import SearchByName from './pages/SearchByName';
-import AllCategories from './pages/AllCategories';
-import Food from './pages/Food';
-import FoodSearch from './pages/FoodSearch';
-import FoodDetails from './pages/FoodDetails';
-import Cart from './pages/Cart';
-import Payment from './pages/Payment';
+import HomeDetails from './pages/customer/HomeDetails';
+import SearchByName from './pages/customer/SearchByName';
+import AllCategories from './pages/customer/AllCategories';
+import Food from './pages/customer/Food';
+import FoodSearch from './pages/customer/FoodSearch';
+import FoodDetails from './pages/customer/FoodDetails';
+import Cart from './pages/customer/Cart';
+import Payment from './pages/customer/Payment';
 
 function App() {
   return (
