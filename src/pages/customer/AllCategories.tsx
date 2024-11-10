@@ -1,12 +1,12 @@
-import Cart1 from '../img/Cart1.png';
-import BackHeader from '../components/header/BackHeader';
-import Search from '../img/search.png';
-import CardCategory from '../components/card/CardCategory';
-import pizza from '../img/pizza.png';
-import burger from '../img/burger.png';
+import Cart1 from '../../img/Cart1.png';
+import BackHeader from '../../components/header/BackHeader';
+import Search from '../../img/search.png';
+import CardCategory from '../../components/card/CardCategory';
+import pizza from '../../img/pizza.png';
+import burger from '../../img/burger.png';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { apiCategories } from '../api/product';
+import { apiCategories } from '../../api/product';
 
 function AllCategories() {
   const [categories, setCategories] = useState([]);

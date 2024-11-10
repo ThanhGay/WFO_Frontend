@@ -1,6 +1,6 @@
-import BackHeader from "../components/header/BackHeader";
-import back_right from "../img/back_right.png"
-import Chicken from '../img/Heading Image.png';
+import BackHeader from "../../components/header/BackHeader";
+import back_right from "../../img/back_right.png"
+import Chicken from '../../img/Heading Image.png';
 
 function Payment() {
     return (

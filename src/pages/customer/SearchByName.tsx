@@ -1,16 +1,16 @@
 import Input from 'antd/es/input/Input';
-import BackHeader from '../components/header/BackHeader';
-import Cart from '../img/Cart.png';
-import Search1 from '../img/search1.png';
+import BackHeader from '../../components/header/BackHeader';
+import Cart from '../../img/Cart.png';
+import Search1 from '../../img/search1.png';
 import { Link, useNavigate } from 'react-router-dom';
-import Rice from '../img/Rice.png';
-import Star from '../img/Star 1.png';
-import CardMeal from '../components/card/CardMeal';
-import Fish from '../img/Fish.png';
-import Noodle from '../img/Noodle.png';
+import Rice from '../../img/Rice.png';
+import Star from '../../img/Star 1.png';
+import CardMeal from '../../components/card/CardMeal';
+import Fish from '../../img/Fish.png';
+import Noodle from '../../img/Noodle.png';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { apiSearch } from '../api/product';
+import { apiSearch } from '../../api/product';
 import { keyboard } from '@testing-library/user-event/dist/keyboard';
 function SearchByName() {
   const navigate = useNavigate();

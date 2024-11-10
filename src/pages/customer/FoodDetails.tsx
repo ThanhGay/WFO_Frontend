@@ -1,14 +1,14 @@
-import BackHeader from '../components/header/BackHeader';
-import Chicken from '../img/Heading Image.png';
-import Star from '../img/Star 1.png';
-import Delivery from '../img/Delivery.png';
-import Clock from '../img/Clock.png';
+import BackHeader from '../../components/header/BackHeader';
+import Chicken from '../../img/Heading Image.png';
+import Star from '../../img/Star 1.png';
+import Delivery from '../../img/Delivery.png';
+import Clock from '../../img/Clock.png';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { apiProductGetID } from '../api/product';
+import { apiProductGetID } from '../../api/product';
 import { Button } from 'antd';
-import { apiAddCart } from '../api/cart';
-import { useAppSelector } from '../redux/hook';
+import { apiAddCart } from '../../api/cart';
+import { useAppSelector } from '../../redux/hook';
 
 function FoodDetails() {
   const {token} = useAppSelector((state) => state.authState)
@@ -42,13 +42,13 @@ function FoodDetails() {
     } else {
       alert("Errrrrrrrrr")
     }
-    // navigate('/homedetails/fooddetails/cart');
+  
   };
 
   return (
     <div className="py-3 px-1 h-fit relative">
       <BackHeader title="Details"></BackHeader>
-      <img className="w-full rounded-2xl object-cover" src={`${process.env.REACT_APP_API_URL}/${productDetail.image}`} />
+      <img className="w-full h-64 rounded-2xl object-cover" src={`${process.env.REACT_APP_API_URL}/${productDetail.image}`} />
       <div className=" px-3">
         <p className="font-medium text-2xl py-3">{productDetail.name}</p>
         <p className="text-xs text-gray-500">{productDetail.description}</p>
