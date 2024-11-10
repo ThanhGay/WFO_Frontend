@@ -1,150 +1,115 @@
-import * as React from 'react';
-import { extendTheme, styled } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
-import { AppProvider, Navigation, Router } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { PageContainer } from '@toolpad/core/PageContainer';
-import Grid from '@mui/material/Grid2';
+import Logo from '../../img/logo 1.png'
+import Profile from '../../img/user.png'
+import Logout from '../../img/power.png'
+import Kimpap from '../../img/1.jpg'
+import Noodle from '../../img/2.jpg'
+import Pho from '../../img/3.jpg'
+import Burger from '../../img/4.jpg'
+import Pizza from '../../img/5.jpg'
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
 
-const NAVIGATION: Navigation = [
-  {
-    kind: 'header',
-    title: 'Main items',
-  },
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    kind: 'header',
-    title: 'Analytics',
-  },
-  {
-    segment: 'reports',
-    title: 'Reports',
-    icon: <BarChartIcon />,
-    children: [
-      {
-        segment: 'sales',
-        title: 'Sales',
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: 'traffic',
-        title: 'Traffic',
-        icon: <DescriptionIcon />,
-      },
-    ],
-  },
-  {
-    segment: 'integrations',
-    title: 'Integrations',
-    icon: <LayersIcon />,
-  },
-];
+function AdminHome() {
+  const images = [Kimpap, Noodle, Pho, Pizza, Burger];
+  const navigate = useNavigate();
+  const productMenuRef = useRef<HTMLDivElement | null>(null);
 
-const demoTheme = extendTheme({
-  colorSchemes: { light: true, dark: true },
-  colorSchemeSelector: 'class',
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [showProductMenu, setShowProductMenu] = useState<boolean>(false);
 
-function useDemoRouter(initialPath: string): Router {
-  const [pathname, setPathname] = React.useState(initialPath);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); 
 
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path: string | URL) => setPathname(String(path)),
+    const handleClickOutside = (event: MouseEvent) => {
+      if (productMenuRef.current && !productMenuRef.current.contains(event.target as Node)) {
+        setShowProductMenu(false);
+      }
     };
-  }, [pathname]);
+    document.addEventListener('mousedown', handleClickOutside);
 
-  return router;
-}
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
-const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
-  backgroundColor: theme.palette.action.hover,
-  borderRadius: theme.shape.borderRadius,
-  height,
-  content: '" "',
-}));
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
-export default function DashboardLayoutBasic(props: any) {
-  const { window } = props;
-
-  const router = useDemoRouter('/dashboard');
-
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window ? window() : undefined;
+  const toggleProductMenu = () => {
+    setShowProductMenu(!showProductMenu);
+  };
 
   return (
-    <AppProvider
-      navigation={NAVIGATION}
-      router={router}
-      theme={demoTheme}
-      window={demoWindow}
-    >
-      <DashboardLayout>
-        <PageContainer>
-          <Grid container spacing={1}>
-            <Grid size={5} />
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
-            <Grid size={4}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={8}>
-              <Skeleton height={100} />
-            </Grid>
+    <div>
+      <div className="shadow-md h-16 rounded flex items-center justify-between">
+        <img className='h-16 w-16' src={Logo} />
+        <p className='font-semibold'>ADMIN</p>
+        <div className='flex items-center gap-3'>
+          <img className='size-4' src={Profile} onClick={() =>{navigate('/profile')}} />
+          <img className='size-5' src={Logout} />
+        </div>
+      </div>
 
-            <Grid size={12}>
-              <Skeleton height={150} />
-            </Grid>
-            <Grid size={12}>
-              <Skeleton height={14} />
-            </Grid>
+      <div className="slideshow-container py-4">
+        <div className="slide ">
+          <img src={images[currentIndex]} className='w-full h-64 rounded-2xl' />
+        </div>
+      </div>
 
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-            <Grid size={3}>
-              <Skeleton height={100} />
-            </Grid>
-          </Grid>
-        </PageContainer>
-      </DashboardLayout>
-    </AppProvider>
+      <div className=" flex gap-6 justify-center">
+        <button
+          onClick={toggleProductMenu} 
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+        >
+          Product
+        </button>
+
+        {showProductMenu && (
+          <div
+            ref={productMenuRef} 
+            className="absolute left-7 bottom-[97px] bg-white shadow-lg rounded-lg p-4 w-30"
+          >
+            <button
+              onClick={() => handleNavigate('/admin/product/create')}
+              className="block py-2 px-4 text-blue-600 hover:bg-gray-200"
+            >
+              Add
+            </button>
+            <button
+              onClick={() => handleNavigate('/admin/product/update')}
+              className="block py-2 px-4 text-green-600 hover:bg-gray-200"
+            >
+              Update
+            </button>
+            <button
+              onClick={() => handleNavigate('/product/delete')}
+              className="block py-2 px-4 text-red-600 hover:bg-gray-200"
+            >
+              Delete
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={() => handleNavigate('/customer')}
+          className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+        >
+          Customer
+        </button>
+        <button
+          onClick={() => handleNavigate('/order')}
+          className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-700"
+        >
+          Order
+        </button>
+      </div>
+      <p className='text-xl px-3 py-3'>Statistical</p>
+    </div>
   );
 }
+
+export default AdminHome;

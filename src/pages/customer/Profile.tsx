@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { useAppSelector } from '../../redux/hook';
 import BackHeader from '../../components/header/BackHeader';
+import { apiUpdateUser } from '../../api/user';
 
 function calcAge(birthDateStr: string) {
   const now = moment();
@@ -18,6 +19,7 @@ function Profile() {
   const { user } = useAppSelector((state) => state.authState);
   const [editMode, setEditMode] = useState(false);
   const [messageAntd, contextHolder] = message.useMessage();
+  const { token } = useAppSelector((state) => state.authState)
 
   const handleSwitch = () => {
     if (user?.type === 'Admin') {
@@ -39,10 +41,36 @@ function Profile() {
     );
   };
 
+  const handleEditConfirm = async () => {
+    if (editMode) {
+      try {
+        const arg = {
+          firstName: user?.firstName || '',
+          lastName: user?.lastName || '',
+          dateOfBirth: user?.dateOfBirth || '',
+          sex: user?.sex || '',
+          phone: user?.phone || '',
+        };
+        const response = await apiUpdateUser(arg, token);
+        console.log(response);
+        
+        if (response.status === 200) {
+          messageAntd.success('Cập nhật thông tin thành công!');
+        } else {
+          messageAntd.error('Cập nhật thất bại!');
+        }
+      } catch (error) {
+        console.error("Lỗi khi gửi yêu cầu cập nhật:", error);
+        messageAntd.error('Có lỗi xảy ra, vui lòng thử lại.');
+      }
+    }
+    setEditMode(!editMode);
+  };
+
   return (
     <div className="px-5 py-3 relative">
       {contextHolder}
-      <BackHeader title="Personal Information" />
+      <BackHeader title="Profile" />
 
       <div className="absolute top-4 right-4">
         <Popover content={<PopOverContent />} trigger={'click'}>
@@ -74,43 +102,63 @@ function Profile() {
         onFinish={(values) => console.log(values)}
         style={{ backgroundColor: '#F0F5FA', padding: 16, borderRadius: 16 }}
       >
-        <Form.Item name="username" label="Full name">
+        <Form.Item
+          name="username"
+          label="Fullname"
+          style={{ width: '100%', maxWidth: '300px' }}
+        >
           <Input
-            variant="borderless"
             placeholder="Fullname"
-            defaultValue={user?.fullName ? user.fullName : 'Khách hàng'}
+            defaultValue={user?.fullName ? user.fullName : 'Customer'}
+            bordered={editMode}
             style={{ color: 'black' }}
           />
         </Form.Item>
-        <Form.Item name="sex" label="Sex">
+        <Form.Item
+          name="sex"
+          label="Sex"
+          style={{ width: '100%', maxWidth: '300px' }}
+        >
           <Input
-            variant="borderless"
-            placeholder="Sex"
-            defaultValue={'Trống'}
+            placeholder="Giới tính"
+            defaultValue={user?.sex ? user.sex : 'Null'}
+            bordered={editMode}
             style={{ color: 'black' }}
           />
         </Form.Item>
-        <Form.Item name="age" label="Age">
+        <Form.Item
+          name="age"
+          label="Age"
+          style={{ width: '100%', maxWidth: '300px' }}
+        >
           <Input
-            variant="borderless"
             placeholder="Age"
             defaultValue={calcAge(user?.dateOfBirth)}
+            bordered={editMode}
             style={{ color: 'black' }}
           />
         </Form.Item>
-        <Form.Item name="phone" label="Phone">
+        <Form.Item
+          name="phone"
+          label="PhoneNumber"
+          style={{ width: '100%', maxWidth: '300px' }}
+        >
           <Input
-            variant="borderless"
-            placeholder="Phone number"
-            defaultValue={user?.phone ? user.phone : 'Chưa có'}
+            placeholder="PhoneNumber"
+            defaultValue={user?.phone ? user.phone : 'Null'}
+            bordered={editMode}
             style={{ color: 'black' }}
           />
         </Form.Item>
-        <Form.Item name="address" label="Address">
+        <Form.Item
+          name="address"
+          label="Address"
+          style={{ width: '100%', maxWidth: '300px' }}
+        >
           <Input
-            variant="borderless"
             placeholder="Address"
-            defaultValue={user?.address ? user.address : 'Chưa có'}
+            defaultValue={user?.address ? user.address : 'Null'}
+            bordered={editMode}
             style={{ color: 'black' }}
           />
         </Form.Item>
@@ -124,9 +172,9 @@ function Profile() {
             padding: 24,
             backgroundColor: '#FF7622'
           }}
-          onClick={() => setEditMode(true)}
+          onClick={handleEditConfirm}
         >
-          edit information
+          {editMode ? 'Confirm' : 'Edit Infomation'}
         </Button>
       </div>
     </div>

@@ -35,3 +35,49 @@ export const apiGetCart = async (
 
   return res;
 };
+
+export const apiDeleteCart = async (id: any, token: any) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/cart/delete/${id}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const res = await axios.delete(url, config);
+
+  return res;
+};
+
+export const apiIncreaseCart = async (id: any, token: any) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/cart/increase/${id}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const res = await axios.put(url, config);
+
+  return res;
+};
+
+export const apiDecreaseCart = async (id: any, token: string) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/cart/decrease/${id}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const res = await axios.put(url, config);
+
+  return res;
+};
+

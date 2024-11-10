@@ -5,10 +5,20 @@ import { useEffect, useState } from 'react';
 import Chicken from '../../img/Heading Image.png';
 import { Button } from 'antd';
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { apiAddCart, apiGetCart } from "../../api/cart";
+import { apiAddCart, apiDecreaseCart, apiDeleteCart, apiGetCart, apiIncreaseCart } from "../../api/cart";
 import { useAppSelector } from "../../redux/hook";
+import Delete from '../../img/delete.png'
+import Remove from '../../img/remove.png'
+interface CartItem {
+  id: number;
+  productId: number;
+  productName: string;
+  productPrice: number;
+  productSize: string;
+  productImage: string;
+  quantity: number;
+}
 function Cart() {
-  const [checked, setChecked] = useState(true);
   const [foodQuantity, setFoodQuantity] = useState(1);
   const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.authState)
@@ -19,8 +29,9 @@ function Cart() {
     navigate('/homedetails/fooddetails/cart/payment');
   };
 
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [checkedItems, setCheckedItems] = useState<any>({});
+  const [showDeleteButtons, setShowDeleteButtons] = useState(false);
 
 
 
@@ -38,35 +49,77 @@ function Cart() {
     fetchCart()
 
   }, [])
-  console.log('my cart', cart);
+  // console.log('my cart', cart);
 
   useEffect(() => {
-    // Tính tổng tiền mỗi lần giỏ hàng thay đổi hoặc checkbox thay đổi
-    const total = cart.reduce((sum, item:any) => {
-      if (checkedItems[item.productId]) {  // Kiểm tra nếu checkbox của sản phẩm này được chọn
+    const total = cart.reduce((sum, item: any) => {
+      if (checkedItems[item.productId]) {
         return sum + item.productPrice * item.quantity;
       }
-      return sum; // Nếu không chọn, bỏ qua sản phẩm này
+      return sum;
     }, 0);
     setTotalPrice(total);
-  }, [cart, checkedItems]); 
+  }, [cart, checkedItems]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>, productId: number) => {
-    // Thay đổi trạng thái checkbox của từng sản phẩm
     setCheckedItems({
       ...checkedItems,
-      [productId]: event.target.checked,  // Cập nhật trạng thái checkbox của sản phẩm
+      [productId]: event.target.checked,
     });
   };
+
+  const handleRemoveItem = async (id:any ) => {
+    try {
+      const res = await apiDeleteCart(id, token); 
+      if (res.status === 200) {
+        alert('Xóa sản phẩm thành công');
+        setCart(cart.filter((item: any) => item.id !== id));
+      } else {
+        alert("Có lỗi xảy ra");
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+      alert("Có lỗi xảy ra khi xóa sản phẩm");
+    }
+  };
+
+  const handleIncreaseItem = async (id: any) => {
+    try{
+      const fetchIncrease = await apiIncreaseCart(id, token);
+    if (fetchIncrease.status === 200) {
+      setCart(fetchIncrease.data.items);
+    } else {
+      alert("Có lỗi xảy ra khi tăng sản phẩm");
+    }
+  } catch (error) {
+    console.error("Lỗi khi tăng sản phẩm:", error);
+  }
+      
+
+  };
+  
+  const handleDecreaseItem = async (id: any) => {
+    const fetchDecrease = await apiDecreaseCart(id, token)
+   
+
+  };
   return (
-    <div className="py-3  " >
-      <BackHeader title="Cart"></BackHeader>
+    <div className="py-1  " >
+      <div className="flex "> 
+        <BackHeader title="Cart"></BackHeader>
+        <img
+          className="size-6  m-2 "
+          src={Delete}
+          onClick={() => setShowDeleteButtons(!showDeleteButtons)}
+        />
+      </div>
+
       <div className="overflow-y-auto max-h-[calc(100vh-200px)] no-scrollbar">
         {cart.map((item: any, index: any) => (
-          <div key={index} className="flex flex-row items-center gap-2 ">
+          <div key={index} className="flex relative  flex-row items-center gap-2 ">
             <Checkbox
               checked={checkedItems[item.productId] || false}
-              onChange={(e) => handleChange(e, item.productId)}  
+              onChange={(e) => handleChange(e, item.productId)}
               inputProps={{ 'aria-label': 'controlled' }}
               sx={{
                 color: orange[800],
@@ -82,20 +135,27 @@ function Cart() {
               <p>Size: {item.productSize}</p>
               <div className=" pl-16 pt-3">
                 <button
-                  className="w-8 h-8 rounded-full bg-red-500 text-white font-bold"
-                  onClick={() => setFoodQuantity(foodQuantity > 1 ? foodQuantity - 1 : 1)}
+                  className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
+                  onClick={() => handleDecreaseItem(item.id)}
                 >
                   -
                 </button>
                 <span className="inline-block min-w-[50px] text-center font-medium">{item.quantity}</span>
                 <button
-                  className="w-8 h-8 rounded-full bg-red-500 text-white font-bold"
-                  onClick={() => setFoodQuantity(foodQuantity + 1)}
+                  className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
+                  onClick={() => handleIncreaseItem(item.id)}
                 >
                   +
                 </button>
               </div>
             </div>
+            {showDeleteButtons && (
+              <img
+                className="size-5 absolute top-2 right-3  "
+                src={Remove}
+                onClick={() => handleRemoveItem(item.id)}
+              />
+            )}
           </div>
 
 
