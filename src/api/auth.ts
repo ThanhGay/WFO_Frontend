@@ -24,4 +24,28 @@ export const apiLogin = async (args: { email: string; password: string }) => {
   return res;
 };
 
+export const apiSendOtp = async(email: string) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/user/generate`
+  const reqBody = {
+    email: email
+  }
+
+  const res = await axios.post(url, reqBody)
+
+  return res;
+}
+
+export const apiResetPasswd = async (args: {email: string, otp: string, passwd: string}) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/user/reset-pw`;
+
+  const reqBody = {
+    email: args.email,
+    newPassword: args.passwd,
+    otp: args.otp
+  }
+
+  const res = await axios.post(url, reqBody)
+
+  return res
+}
 

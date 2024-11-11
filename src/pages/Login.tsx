@@ -79,7 +79,7 @@ function Login() {
             </Form.Item>
 
             <div className="text-end mb-4 text-base font-medium">
-              <Link to="#">Forgot password ?</Link>
+              <Link to="/reset-pw">Forgot password ?</Link>
             </div>
 
             <Button

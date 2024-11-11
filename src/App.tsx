@@ -3,6 +3,7 @@ import {
   AdminAddProduct,
   AdminHome,
   AdminReport,
+  ConfirmOTP,
   Layout,
   Login,
   NoPage,
@@ -19,7 +20,6 @@ import FoodDetails from './pages/customer/FoodDetails';
 import Cart from './pages/customer/Cart';
 import Payment from './pages/customer/Payment';
 import ResetPW from './pages/ResetPW';
-import { Update } from '@mui/icons-material';
 import UpdateProduct from './pages/admin/UpdateProduct';
 
 
@@ -29,7 +29,8 @@ function App() {
       <Route path="/" index element={<Layout />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/resetpassword" element={<ResetPW />} />
+      <Route path="/reset-pw" element={<ResetPW />} />
+      <Route path="/confirm" element={<ConfirmOTP />} />
       <Route path="*" element={<NoPage />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/homedetails" element={<HomeDetails/>}/>
