@@ -1,5 +1,9 @@
 import axios from 'axios';
-export const apiAddCart = async (args: { productId: number; quantity: number; note:string | null; }, token: string) => {
+
+export const apiAddCart = async (
+  args: { productId: number; quantity: number; note: string | null },
+  token: string
+) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/add-to-cart`;
 
   const reqBody = {
@@ -18,10 +22,8 @@ export const apiAddCart = async (args: { productId: number; quantity: number; no
 
   return res;
 };
-export const apiGetCart = async (
 
-  token: string
-) => {
+export const apiGetCart = async (token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/my-cart`;
 
   const config = {
@@ -31,12 +33,12 @@ export const apiGetCart = async (
     }
   };
 
-  const res = await axios.get(url,config);
+  const res = await axios.get(url, config);
 
   return res;
 };
 
-export const apiDeleteCart = async (id: any, token: any) => {
+export const apiDeleteCart = async (id: number, token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/delete/${id}`;
 
   const config = {
@@ -51,7 +53,7 @@ export const apiDeleteCart = async (id: any, token: any) => {
   return res;
 };
 
-export const apiIncreaseCart = async (id: any, token: any) => {
+export const apiIncreaseCart = async (id: number, token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/increase/${id}`;
 
   const config = {
@@ -61,12 +63,12 @@ export const apiIncreaseCart = async (id: any, token: any) => {
     }
   };
 
-  const res = await axios.put(url, config);
+  const res = await axios.put(url, null, config);
 
   return res;
 };
 
-export const apiDecreaseCart = async (id: any, token: string) => {
+export const apiDecreaseCart = async (id: number, token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/decrease/${id}`;
 
   const config = {
@@ -76,8 +78,7 @@ export const apiDecreaseCart = async (id: any, token: string) => {
     }
   };
 
-  const res = await axios.put(url, config);
+  const res = await axios.put(url, null, config);
 
   return res;
 };
-

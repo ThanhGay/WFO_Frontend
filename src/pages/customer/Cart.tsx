@@ -22,13 +22,13 @@ interface CartItem {
   productImage: string;
   quantity: number;
 }
+
 function Cart() {
-  const [foodQuantity, setFoodQuantity] = useState(1);
   const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.authState);
-  const location = useLocation();
-  const { quantity } = location.state || {};
+
   const [totalPrice, setTotalPrice] = useState(0);
+
   const handleButton = () => {
     navigate('/homedetails/fooddetails/cart/payment');
   };
@@ -38,18 +38,12 @@ function Cart() {
   const [showDeleteButtons, setShowDeleteButtons] = useState(false);
 
   useEffect(() => {
-    if (quantity) {
-      setFoodQuantity(quantity);
-    }
-  }, [quantity]);
-
-  useEffect(() => {
-    const fetchCart = async () => {
+    (async () => {
       const res = await apiGetCart(token);
       setCart(res.data.items);
-    };
-    fetchCart();
+    })();
   }, [token]);
+
   // console.log('my cart', cart);
 
   useEffect(() => {
@@ -87,11 +81,16 @@ function Cart() {
     }
   };
 
-  const handleIncreaseItem = async (id: any) => {
+  const handleIncreaseItem = async (id: number) => {
     try {
       const fetchIncrease = await apiIncreaseCart(id, token);
       if (fetchIncrease.status === 200) {
-        setCart(fetchIncrease.data.items);
+        // Update the cart state with the increased quantity
+        setCart((prevCart) =>
+          prevCart.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          )
+        );
       } else {
         alert('Có lỗi xảy ra khi tăng sản phẩm');
       }
@@ -101,8 +100,30 @@ function Cart() {
   };
 
   const handleDecreaseItem = async (id: any) => {
-    const fetchDecrease = await apiDecreaseCart(id, token);
+    try {
+      const fetchDecrease = await apiDecreaseCart(id, token);
+      if (fetchDecrease.status === 200) {
+        // Update the cart state with the decreased quantity (handle edge cases)
+        setCart((prevCart) => {
+          const updatedCart = prevCart.map((item) => {
+            if (item.id === id) {
+              const newQuantity = item.quantity - 1;
+              return newQuantity > 0
+                ? { ...item, quantity: newQuantity }
+                : item;
+            }
+            return item;
+          });
+          return updatedCart.filter((item) => item.quantity > 0); // Remove items with 0 quantity
+        });
+      } else {
+        alert('Có lỗi xảy ra khi giảm sản phẩm');
+      }
+    } catch (error) {
+      console.error('Lỗi khi giảm sản phẩm:', error);
+    }
   };
+
   return (
     <div className="py-1  ">
       <div className="flex ">
