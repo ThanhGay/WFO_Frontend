@@ -46,11 +46,11 @@ function AdminHome() {
   return (
     <div>
       <div className="shadow-md h-16 rounded flex items-center justify-between">
-        <img className='h-16 w-16' src={Logo} />
+        <img alt='logo' className='h-16 w-16' src={Logo} />
         <p className='font-semibold'>ADMIN</p>
         <div className='flex items-center gap-3'>
-          <img className='size-4' src={Profile} onClick={() =>{navigate('/profile')}} />
-          <img className='size-5' src={Logout} />
+          <img alt='avatar' className='size-4' src={Profile} onClick={() =>{navigate('/profile')}} />
+          <img alt='logout-btn' className='size-5' src={Logout} />
         </div>
       </div>
 
