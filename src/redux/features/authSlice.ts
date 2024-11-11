@@ -1,4 +1,9 @@
-import { apiLogin } from '../../api/auth';
+import {
+  KEY_STORAGE,
+  removeDataFromLocalStorage,
+  saveDataToLocalStorage
+} from '../../../src/local/config';
+import { apiLogin } from '../../../src/api/auth';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type AuthState = {
@@ -32,7 +37,17 @@ const AuthSlice = createSlice({
   initialState,
   reducers: {
     setDataUser: (state, action: PayloadAction<any>) => {
-      state.user = action.payload
+      state.user = action.payload;
+      saveDataToLocalStorage(KEY_STORAGE.USER, action.payload);
+    },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = '';
+      removeDataFromLocalStorage(KEY_STORAGE.USER);
+      removeDataFromLocalStorage(KEY_STORAGE.TOKEN);
     }
   },
   extraReducers: (builder) =>
@@ -48,6 +63,8 @@ const AuthSlice = createSlice({
         state.errorMessage = '';
         state.user = action.payload;
         state.token = action.payload.token;
+        saveDataToLocalStorage(KEY_STORAGE.USER, action.payload);
+        saveDataToLocalStorage(KEY_STORAGE.TOKEN, action.payload.token);
       })
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
@@ -57,5 +74,5 @@ const AuthSlice = createSlice({
 });
 
 const authReducer = AuthSlice.reducer;
-export const {setDataUser} = AuthSlice.actions;
+export const { setToken, setDataUser, logout } = AuthSlice.actions;
 export default authReducer;

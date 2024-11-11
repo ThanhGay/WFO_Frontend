@@ -3,6 +3,7 @@ export { default as Login } from './Login';
 export { default as Signup } from './Signup';
 export { default as ConfirmOTP } from './CofirmOTP';
 export { default as NoPage } from './NoPage';
+export { default as MenuProfile } from './customer/MenuProfile';
 export { default as Profile } from './customer/Profile';
 export { default as AdminHome } from './admin/AdminHome';
 export { default as AdminReport } from './admin/AdminReport';
