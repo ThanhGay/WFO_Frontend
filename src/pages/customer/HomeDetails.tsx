@@ -52,7 +52,6 @@ function HomeDetails() {
       }
     })();
   }, []);
-  console.log(categories);
 
   return (
     <div className="flex flex-col px-3">
