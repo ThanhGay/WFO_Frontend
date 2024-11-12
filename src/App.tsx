@@ -7,6 +7,7 @@ import {
   Layout,
   Login,
   NoPage,
+  MenuProfile,
   Profile,
   Signup
 } from './pages';
@@ -21,9 +22,10 @@ import Cart from './pages/customer/Cart';
 import Payment from './pages/customer/Payment';
 import ResetPW from './pages/ResetPW';
 import UpdateProduct from './pages/admin/UpdateProduct';
-
+import { usePageAuth } from './utils/hooks';
 
 function App() {
+  // usePageAuth()
   return (
     <Routes>
       <Route path="/" index element={<Layout />} />
@@ -32,15 +34,16 @@ function App() {
       <Route path="/reset-pw" element={<ResetPW />} />
       <Route path="/confirm" element={<ConfirmOTP />} />
       <Route path="*" element={<NoPage />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/homedetails" element={<HomeDetails/>}/>
-      <Route path='/homedetails/searchbyname' element={<SearchByName/>} />
-      <Route path='/homedetails/food' element={<Food/>}/>
-      <Route path='/homedetails/foodsearch' element={<FoodSearch/>}/>
-      <Route path='/homedetails/allcategories' element={<AllCategories/>}/>
-      <Route path='/homedetails/food/fooddetails' element={<FoodDetails/>}/>
-      <Route path='/cart' element={<Cart/>}/>
-      <Route path='/payment' element={<Payment />} />
+      <Route path="/profile" element={<MenuProfile />} />
+      <Route path="/profile/information" element={<Profile />} />
+      <Route path="/homedetails" element={<HomeDetails />} />
+      <Route path="/homedetails/searchbyname" element={<SearchByName />} />
+      <Route path="/homedetails/food" element={<Food />} />
+      <Route path="/homedetails/foodsearch" element={<FoodSearch />} />
+      <Route path="/homedetails/allcategories" element={<AllCategories />} />
+      <Route path="/homedetails/food/fooddetails" element={<FoodDetails />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/payment" element={<Payment />} />
 
       <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin/product/update" element={<UpdateProduct />} />

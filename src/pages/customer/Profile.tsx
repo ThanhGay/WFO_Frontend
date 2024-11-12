@@ -1,21 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Avatar,
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Popover
-} from 'antd';
-import { EllipsisOutlined, SwapOutlined } from '@ant-design/icons';
+import { Avatar, Button, DatePicker, Form, Input, message } from 'antd';
+
 import moment from 'moment';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import BackHeader from '../../components/header/BackHeader';
 import { apiUpdateUser } from '../../api/user';
-import { setDataUser } from '../../../src/redux/features/authSlice';
+import { setDataUser } from '../../redux/features/authSlice';
 
 function calcAge(birthDateStr: string) {
   const now = moment();
@@ -24,32 +15,11 @@ function calcAge(birthDateStr: string) {
 }
 
 function Profile() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, token } = useAppSelector((state) => state.authState);
   const [messageAntd, contextHolder] = message.useMessage();
   const [editMode, setEditMode] = useState(false);
   const [dob, setDob] = useState('');
-
-  const handleSwitch = () => {
-    if (user?.type === 'Admin') {
-      navigate('/admin');
-    } else {
-      messageAntd.error('Bạn không có quyền truy cập');
-    }
-  };
-
-  const PopOverContent = () => {
-    return (
-      <div
-        className="flex gap-1 items-center cursor-pointer"
-        onClick={handleSwitch}
-      >
-        <SwapOutlined />
-        <div>Switch to Admin</div>
-      </div>
-    );
-  };
 
   const toEditMode = () => {
     setEditMode(true);
@@ -87,18 +57,7 @@ function Profile() {
   return (
     <div className="px-5 py-3 relative">
       {contextHolder}
-      <BackHeader title="Profile" />
-
-      <div className="absolute top-4 right-4">
-        <Popover content={<PopOverContent />} trigger={'click'}>
-          <Button
-            type="primary"
-            shape="circle"
-            icon={<EllipsisOutlined />}
-            style={{ backgroundColor: '#ECF0F4', color: 'black' }}
-          />
-        </Popover>
-      </div>
+      <BackHeader title="Profile Information" />
 
       <div className="flex gap-8 mb-8 items-center">
         <Avatar
@@ -115,6 +74,16 @@ function Profile() {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         layout="inline"
+        initialValues={{
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          username: user?.fullName ? user.fullName : 'Customer',
+          // dateOfBirth: user?.dateOfBirth,
+          sex: user?.sex,
+          age: calcAge(user?.dateOfBirth),
+          phone: user?.phone,
+          address: user?.address
+        }}
         disabled={!editMode}
         onFinish={(values) => handleEditConfirm(values)}
         style={{ backgroundColor: '#F0F5FA', padding: 16, borderRadius: 16 }}
@@ -126,14 +95,14 @@ function Profile() {
               label="Họ"
               style={{ width: '100%', maxWidth: '300px' }}
             >
-              <Input placeholder="Họ" defaultValue={user?.firstName} />
+              <Input placeholder="Họ" />
             </Form.Item>
             <Form.Item
               name="lastName"
               label="Tên"
               style={{ width: '100%', maxWidth: '300px' }}
             >
-              <Input placeholder="Tên" defaultValue={user?.lastName} />
+              <Input placeholder="Tên" />
             </Form.Item>
           </>
         ) : (
@@ -144,7 +113,6 @@ function Profile() {
           >
             <Input
               placeholder="Fullname"
-              defaultValue={user?.fullName ? user.fullName : 'Customer'}
               bordered={editMode}
               style={{ color: 'black' }}
             />
@@ -157,7 +125,6 @@ function Profile() {
         >
           <Input
             placeholder="Giới tính"
-            defaultValue={user?.sex ? user?.sex : 'Null'}
             bordered={editMode}
             style={{ color: 'black' }}
           />
@@ -182,7 +149,6 @@ function Profile() {
           >
             <Input
               placeholder="Age"
-              defaultValue={calcAge(user?.dateOfBirth)}
               bordered={editMode}
               style={{ color: 'black' }}
             />
@@ -195,7 +161,6 @@ function Profile() {
         >
           <Input
             placeholder="PhoneNumber"
-            defaultValue={user?.phone ? user.phone : 'Null'}
             bordered={editMode}
             style={{ color: 'black' }}
           />
@@ -207,7 +172,6 @@ function Profile() {
         >
           <Input
             placeholder="Address"
-            defaultValue={user?.address ? user.address : 'Null'}
             bordered={editMode}
             style={{ color: 'black' }}
           />
