@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import BackHeader from '../../components/header/BackHeader';
 import { useAppSelector } from '../../../src/redux/hook';
 import { apiPostProduct } from '../../../src/api/product';
-
+import { useNavigate } from 'react-router-dom';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
@@ -76,7 +76,11 @@ function CreateProduct() {
       token
     );
 
-    if (dataRes) console.log(dataRes);
+    if (dataRes){
+      alert('Thanh cong');
+      ('')
+    } 
+    console.log('data',dataRes);
   };
 
   const uploadButton = (
@@ -118,7 +122,7 @@ function CreateProduct() {
           />
         </Form.Item>
         <Form.Item name={'productCategory'} label="Phân loại">
-          <Select placeholder="Chọn phân loại sản phẩm" />
+          <Select placeholder="Chọn phân loại sản phẩm"  />
         </Form.Item>
         <Form.Item
           name={'productImage'}
@@ -129,7 +133,7 @@ function CreateProduct() {
             showUploadList={false}
             listType="picture-card"
             maxCount={1}
-            
+            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
