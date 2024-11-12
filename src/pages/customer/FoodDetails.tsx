@@ -46,9 +46,10 @@ function FoodDetails() {
 
   return (
     <div className="py-3 px-1 h-fit relative">
-      <BackHeader title="Details"></BackHeader>
+      <BackHeader title="Details" />
       <img
         className="w-full h-64 rounded-2xl object-cover"
+        alt={productDetail.name}
         src={`${process.env.REACT_APP_API_URL}${productDetail.image}`}
       />
       <div className=" px-3">
@@ -61,15 +62,15 @@ function FoodDetails() {
 
       <div className="flex flex-row justify-start gap-9 py-2 px-2">
         <div className="flex flex-row items-center gap-2">
-          <img className="size-4" src={Star} />
+          <img className="size-4" src={Star} alt="rate" />
           <p className="font-semibold text-xs">4.7</p>
         </div>
         <div className="flex flex-row items-center gap-2">
-          <img className="size-4" src={Delivery} />
+          <img className="size-4" src={Delivery} alt="freight" />
           <p className="font-semibold text-xs">Free</p>
         </div>
         <div className="flex flex-row items-center gap-2">
-          <img className="size-4" src={Clock} />
+          <img className="size-4" src={Clock} alt="timer" />
           <p className="font-semibold text-xs">20 min</p>
         </div>
       </div>

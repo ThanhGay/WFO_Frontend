@@ -107,7 +107,7 @@ function HomeDetails() {
           textInf="Burger-Chicken-Riche-Wings"
         />
       </div>
-      <CustomBottomNavigation />
+      <CustomBottomNavigation screen="homedetails" />
     </div>
   );
 }

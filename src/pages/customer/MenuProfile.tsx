@@ -137,7 +137,7 @@ function MenuProfile() {
         </div>
       </div>
 
-      <CustomBottomNavigation />
+      <CustomBottomNavigation screen="profile" />
     </div>
   );
 }
