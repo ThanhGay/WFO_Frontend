@@ -140,7 +140,7 @@ function Cart() {
         {cart.map((item: any, index: any) => (
           <div
             key={index}
-            className="flex relative  flex-row items-center gap-2 "
+            className="flex relative  flex-row items-center gap-2 border-b-stone-800 "
           >
             <Checkbox
               checked={checkedItems[item.productId] || false}

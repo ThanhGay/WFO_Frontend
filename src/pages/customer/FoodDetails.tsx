@@ -11,7 +11,7 @@ import { apiAddCart } from '../../api/cart';
 import { useAppSelector } from '../../redux/hook';
 
 function FoodDetails() {
-  const { token } = useAppSelector((state) => state.authState);
+  const {token} = useAppSelector((state) => state.authState)
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,8 +23,6 @@ function FoodDetails() {
     const fetchProductDetail = async () => {
       if (id) {
         const response = await apiProductGetID(id);
-        console.log(response);
-
         setProductDetail(response);
       }
     };
@@ -32,25 +30,23 @@ function FoodDetails() {
     fetchProductDetail();
   }, [id]);
 
+
+  console.log('token:',token);
+  
   const handleButton = async () => {
-    const res = await apiAddCart(
-      { productId: productDetail.id, quantity: quantity, note: null },
-      token
-    );
+    const res = await apiAddCart({productId: productDetail.id, quantity: quantity, note: null}, token)
     if (res.status === 200) {
-      alert('Them san pham thanh cong');
+      alert('Them san pham thanh cong')
     } else {
-      alert('Errrrrrrrrr');
+      alert("Errrrrrrrrr")
     }
+  
   };
 
   return (
-    <div className="py-3 px-1 h-fit relative">
+    <div className=" px-1 h-fit relative">
       <BackHeader title="Details"></BackHeader>
-      <img
-        className="w-full h-64 rounded-2xl object-cover"
-        src={`${process.env.REACT_APP_API_URL}${productDetail.image}`}
-      />
+      <img className="w-full h-64 rounded-2xl object-cover" src={`${process.env.REACT_APP_API_URL}/${productDetail.image}`} />
       <div className=" px-3">
         <p className="font-medium text-2xl py-3">{productDetail.name}</p>
         <p className="text-xs text-gray-500">{productDetail.description}</p>
@@ -74,11 +70,9 @@ function FoodDetails() {
         </div>
       </div>
 
-      <div className="absolute bottom-16">
+      <div className="absolute bottom-14">
         <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg w-[400px] absolute -bottom-40 ">
-          <span className="font-semibold text-xl">
-            {totalPrice.toLocaleString('VN-vi')}đ
-          </span>
+          <span className="font-semibold text-xl">{totalPrice.toLocaleString('VN-vi')}đ</span>
           <div className="flex items-center rounded-full bg-black p-2 ">
             <button
               className="w-8 h-8 rounded-full bg-gray-700 text-white font-bold"
