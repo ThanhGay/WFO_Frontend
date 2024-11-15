@@ -5,12 +5,9 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { ShoppingCart, Person, FactCheck, Home } from '@mui/icons-material';
 
-function CustomBottomNavigation() {
+function CustomBottomNavigation({ screen }: { screen: any }) {
   const navigate = useNavigate();
-
-  const [value, setValue] = useState(
-    localStorage.getItem('bottomNavValue') || 'recents'
-  );
+  const [value, setValue] = useState(screen);
 
   useEffect(() => {
     const savedValue = localStorage.getItem('bottomNavValue');
@@ -19,13 +16,9 @@ function CustomBottomNavigation() {
     }
   }, []);
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    localStorage.setItem('bottomNavValue', newValue);
+    navigate('/' + newValue);
   };
 
   return (
@@ -45,9 +38,8 @@ function CustomBottomNavigation() {
     >
       <BottomNavigationAction
         label="Home"
-        value="recents"
+        value="homedetails"
         icon={<Home />}
-        onClick={() => handleNavigation('/homedetails')}
       />
       <BottomNavigationAction
         label="Order"
@@ -56,15 +48,13 @@ function CustomBottomNavigation() {
       />
       <BottomNavigationAction
         label="Cart"
-        value="nearby"
+        value="cart"
         icon={<ShoppingCart />}
-        onClick={() => handleNavigation('/cart')}
       />
       <BottomNavigationAction
         label="Profile"
-        value="folder"
+        value="profile"
         icon={<Person />}
-        onClick={() => handleNavigation('/profile')}
       />
     </BottomNavigation>
   );
