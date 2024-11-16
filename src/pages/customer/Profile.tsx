@@ -184,7 +184,7 @@ function Profile() {
                 htmlType="submit"
                 style={{
                   textTransform: 'capitalize',
-                  width: '100%',
+                  width: '127%',
                   padding: 24,
                   backgroundColor: '#FF7622'
                 }}

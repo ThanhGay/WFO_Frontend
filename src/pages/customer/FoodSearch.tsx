@@ -14,6 +14,7 @@ import Restaurant from '../../img/Restaurant.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { apiProduct, apiSearch } from '../../api/product';
 import CardCategory from '../../components/card/CardCategory';
+import Cart from '../../img/basket.png'
 
 function FoodSearch() {
   const [option, setOption] = useState('');
@@ -35,6 +36,9 @@ function FoodSearch() {
   const navigate = useNavigate();
   const handleSearch = () => {
     navigate('/homedetails/searchbyname');
+  };
+  const handleCart = () => {
+    navigate('/cart');
   };
 
   return (
@@ -75,7 +79,7 @@ function FoodSearch() {
         </div>
         <div className="flex flex-row gap-3 justify-center">
           <img className="size-10" src={Search} onClick={handleSearch} />
-          <img className="size-10" src={Cart1} />
+          <img className="size-10" src={Cart} onClick={handleCart} />
         </div>
       </div>
       <p>Popular Burger</p>

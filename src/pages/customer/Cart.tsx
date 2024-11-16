@@ -26,13 +26,7 @@ interface CartItem {
 function Cart() {
   const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.authState);
-
   const [totalPrice, setTotalPrice] = useState(0);
-
-  const handleButton = () => {
-    navigate('/homedetails/fooddetails/cart/payment');
-  };
-
   const [cart, setCart] = useState<CartItem[]>([]);
   const [checkedItems, setCheckedItems] = useState<any>({});
   const [showDeleteButtons, setShowDeleteButtons] = useState(false);
@@ -55,6 +49,13 @@ function Cart() {
     }, 0);
     setTotalPrice(total);
   }, [cart, checkedItems]);
+
+  const handleButton = () => {
+    const selectedItems = cart.filter((item) => checkedItems[item.productId]);
+    console.log('Món đã chọn', selectedItems);
+
+    navigate('/payment', { state: { selectedItems } });
+  };
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -140,7 +141,7 @@ function Cart() {
         {cart.map((item: any, index: any) => (
           <div
             key={index}
-            className="flex relative  flex-row items-center gap-2 border-b-stone-800 "
+            className="flex relative  flex-row items-center gap-2 border-b-2 "
           >
             <Checkbox
               checked={checkedItems[item.productId] || false}

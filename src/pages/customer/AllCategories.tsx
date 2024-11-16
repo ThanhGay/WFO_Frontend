@@ -5,8 +5,9 @@ import { apiCategories } from '../../api/product';
 import CardCategory from '../../components/card/CardCategory';
 import BackHeader from '../../components/header/BackHeader';
 
-import Cart1 from '../../img/Cart1.png';
+
 import Search from '../../img/search.png';
+import Cart from '../../img/basket.png'
 
 function AllCategories() {
   const navigate = useNavigate();
@@ -42,13 +43,13 @@ function AllCategories() {
           />
           <img
             className="size-10"
-            src={Cart1}
+            src={Cart}
             onClick={handleCart}
             alt="cart"
           />
         </div>
       </div>
-      <div className="  grid grid-cols-2 gap-4 overflow-x-auto no-scrollbar h-[530px]">
+      <div className="  grid grid-cols-2 overflow-x-auto no-scrollbar ">
         {categories.map((item: any) => (
           <CardCategory
             key={item?.id}

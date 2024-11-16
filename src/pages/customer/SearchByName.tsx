@@ -1,6 +1,5 @@
 import Input from 'antd/es/input/Input';
 import BackHeader from '../../components/header/BackHeader';
-import Cart from '../../img/Cart.png';
 import Search1 from '../../img/search1.png';
 import { Link, useNavigate } from 'react-router-dom';
 import Rice from '../../img/Rice.png';
@@ -11,6 +10,7 @@ import Noodle from '../../img/Noodle.png';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { apiSearch } from '../../api/product';
+import Cart from '../../img/basket.png'
 import { keyboard } from '@testing-library/user-event/dist/keyboard';
 function SearchByName() {
   const navigate = useNavigate();
@@ -44,12 +44,15 @@ function SearchByName() {
   const handleButton = () => {
     navigate('/homedetails/food');
   };
+  const handleCart = () => {
+    navigate('/cart');
+  };
 
   return (
     <div className=" py-3 px-3">
       <div className="flex flex-row items-center">
         <BackHeader title="Search"></BackHeader>
-        <img className=" absolute top-2 right-2" src={Cart} />
+        <img className=" absolute size-10 top-2 right-2" src={Cart} onClick={handleCart} />
       </div>
       <Input
         type="text"

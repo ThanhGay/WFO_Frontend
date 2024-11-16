@@ -23,6 +23,9 @@ import Payment from './pages/customer/Payment';
 import ResetPW from './pages/ResetPW';
 import UpdateProduct from './pages/admin/UpdateProduct';
 import { usePageAuth } from './utils/hooks';
+import OrderSuccess from './pages/customer/OrderSuccess';
+import EditAdress from './pages/customer/EditAdress';
+import MyOrder from './pages/customer/MyOrder';
 
 function App() {
   // usePageAuth()
@@ -44,6 +47,9 @@ function App() {
       <Route path="/homedetails/food/fooddetails" element={<FoodDetails />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/payment" element={<Payment />} />
+      <Route path="/ordersuccess" element={<OrderSuccess/>} />
+      <Route path="/editaddress" element={<EditAdress/>} />
+      <Route path="/myorder" element={<MyOrder />} />
 
       <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin/product/update" element={<UpdateProduct />} />

@@ -43,7 +43,7 @@ function CustomBottomNavigation({ screen }: { screen: any }) {
       />
       <BottomNavigationAction
         label="Order"
-        value="favorites"
+        value="myorder"
         icon={<FactCheck />}
       />
       <BottomNavigationAction

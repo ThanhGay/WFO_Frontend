@@ -31,7 +31,7 @@ function FoodDetails() {
   }, [id]);
 
 
-  console.log('token:',token);
+  // console.log('token:',token);
   
   const handleButton = async () => {
     const res = await apiAddCart({productId: productDetail.id, quantity: quantity, note: null}, token)
@@ -44,10 +44,10 @@ function FoodDetails() {
   };
 
   return (
-    <div className="py-3 px-1 h-fit relative">
+    <div className="py-3   relative">
       <BackHeader title="Details" />
       <img
-        className="w-full h-64 rounded-2xl object-cover"
+        className="w-full h-64 max-w-full rounded-2xl object-cover "
         alt={productDetail.name}
         src={`${process.env.REACT_APP_API_URL}${productDetail.image}`}
       />
@@ -74,8 +74,8 @@ function FoodDetails() {
         </div>
       </div>
 
-      <div className="absolute bottom-14">
-        <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg w-[400px] absolute -bottom-40 ">
+      <div className="fixed bottom-10 w-full  ">
+        <div className="flex items-center justify-between bg-gray-100 p-2 rounded-lg max-w-sm mx-auto ">
           <span className="font-semibold text-xl">{totalPrice.toLocaleString('VN-vi')}đ</span>
           <div className="flex items-center rounded-full bg-black p-2 ">
             <button
@@ -101,10 +101,11 @@ function FoodDetails() {
         className="btn-submit"
         size="large"
         style={{
-          width: '100%',
+          width: '100%',                  // Nút chiếm toàn bộ chiều ngang
           backgroundColor: '#FF7622',
-          bottom: '0px',
-          position: 'fixed'
+          bottom: '0',                    // Cố định ở dưới cùng màn hình
+          position: 'fixed',              // Sử dụng fixed để nút luôn cố định
+          left: '0', 
         }}
         onClick={handleButton}
       >

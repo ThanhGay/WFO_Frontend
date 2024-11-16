@@ -58,7 +58,7 @@ export const apiIncreaseCart = async (id: any, token: any) => {
     }
   };
 
-  const res = await axios.put(url, config);
+  const res = await axios.put(url,null,config);
 
   return res;
 };
@@ -73,7 +73,7 @@ export const apiDecreaseCart = async (id: any, token: string) => {
     }
   };
 
-  const res = await axios.put(url, config);
+  const res = await axios.put(url,null, config);
 
   return res;
 };
