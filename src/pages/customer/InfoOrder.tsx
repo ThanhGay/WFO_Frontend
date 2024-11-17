@@ -57,8 +57,8 @@ function InfoOrder() {
         message.success(dataRes.data);
 
         setTimeout(() => {
-          navigate('/home');
-        }, 3000);
+          navigate('/myorder');
+        }, 2000);
       }
     } catch (err: any) {
       alert(err.response.data);

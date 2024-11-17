@@ -13,6 +13,7 @@ import {
 import { useAppSelector } from '../../redux/hook';
 import Delete from '../../img/delete.png';
 import Remove from '../../img/remove.png';
+import No_shopping from '../../img/no-shopping-cart.png'
 interface CartItem {
   id: number;
   productId: number;
@@ -138,61 +139,70 @@ function Cart() {
       </div>
 
       <div className="overflow-y-auto max-h-[calc(100vh-200px)] no-scrollbar">
-        {cart.map((item: any, index: any) => (
-          <div
-            key={index}
-            className="flex relative  flex-row items-center gap-2 border-b-2 "
-          >
-            <Checkbox
-              checked={checkedItems[item.productId] || false}
-              onChange={(e) => handleChange(e, item.productId)}
-              inputProps={{ 'aria-label': 'controlled' }}
-              sx={{
-                color: orange[800],
-                '&.Mui-checked': {
-                  color: orange[600]
-                }
-              }}
-            />
-            <img
-              src={`${process.env.REACT_APP_API_URL}/${item?.productImage}`}
-              className="h-32 w-32 rounded-3xl"
-              alt={item?.productName}
-            />
-            <div className=" py-4">
-              <p className="text-xl">{item.productName}</p>
-              <p className="font-bold">
-                Price: {item.productPrice.toLocaleString('VN-vi')}
-              </p>
-              <p>Size: {item.productSize}</p>
-              <div className=" pl-16 pt-3">
-                <button
-                  className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
-                  onClick={() => handleDecreaseItem(item.id)}
-                >
-                  -
-                </button>
-                <span className="inline-block min-w-[50px] text-center font-medium">
-                  {item.quantity}
-                </span>
-                <button
-                  className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
-                  onClick={() => handleIncreaseItem(item.id)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            {showDeleteButtons && (
-              <img
-                alt="delete-btn"
-                className="size-5 absolute top-2 right-3  "
-                src={Remove}
-                onClick={() => handleRemoveItem(item.id)}
-              />
-            )}
+        {cart.length === 0 ? (
+          <div className="flex flex-col justify-center py-10 items-center">
+            <img className='size-36 opacity-15' src={No_shopping}/>
+            <p className="text-lg font-medium text-gray-500">
+              Your cart is empty.
+            </p>
           </div>
-        ))}
+        ) : (
+          cart.map((item: any, index: any) => (
+            <div
+              key={index}
+              className="flex relative flex-row items-center gap-2 border-b-2"
+            >
+              <Checkbox
+                checked={checkedItems[item.productId] || false}
+                onChange={(e) => handleChange(e, item.productId)}
+                inputProps={{ 'aria-label': 'controlled' }}
+                sx={{
+                  color: orange[800],
+                  '&.Mui-checked': {
+                    color: orange[600]
+                  }
+                }}
+              />
+              <img
+                src={`${process.env.REACT_APP_API_URL}/${item?.productImage}`}
+                className="h-32 w-32 rounded-3xl"
+                alt={item?.productName}
+              />
+              <div className="py-4">
+                <p className="text-xl">{item.productName}</p>
+                <p className="font-bold">
+                  Price: {item.productPrice.toLocaleString('VN-vi')}
+                </p>
+                <p>Size: {item.productSize}</p>
+                <div className="pl-16 pt-3">
+                  <button
+                    className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
+                    onClick={() => handleDecreaseItem(item.id)}
+                  >
+                    -
+                  </button>
+                  <span className="inline-block min-w-[50px] text-center font-medium">
+                    {item.quantity}
+                  </span>
+                  <button
+                    className="w-8 h-8 rounded-full bg-orange-400 text-white font-bold"
+                    onClick={() => handleIncreaseItem(item.id)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              {showDeleteButtons && (
+                <img
+                  alt="delete-btn"
+                  className="size-5 absolute top-2 right-3"
+                  src={Remove}
+                  onClick={() => handleRemoveItem(item.id)}
+                />
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       <div className=" flex items-center gap-3 bg-slate-200 h-14 w-full bottom-10 rounded-lg absolute">

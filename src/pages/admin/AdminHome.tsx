@@ -50,7 +50,6 @@ function AdminHome() {
         <p className='font-semibold'>ADMIN</p>
         <div className='flex items-center gap-3'>
           <img alt='avatar' className='size-4' src={Profile} onClick={() =>{navigate('/profile')}} />
-          <img alt='logout-btn' className='size-5' src={Logout} />
         </div>
       </div>
 

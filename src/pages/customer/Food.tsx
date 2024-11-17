@@ -12,25 +12,40 @@ import Burger1 from '../../img/Burger1.png';
 import CardRestaurant from '../../components/card/CardRestaurant';
 import Restaurant from '../../img/Restaurant.png';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { apiProduct, apiProductGetID } from '../../api/product';
+import { apiCategories, apiProduct, apiProductGetID } from '../../api/product';
 import CardCategory from '../../components/card/CardCategory';
 import Cart from '../../img/basket.png'
 
 function Food() {
   const [option, setOption] = useState('');
   const [product, setProduct] = useState([]);
+  const [categories,setCategories] = useState([])
   const location = useLocation();
   const { category } = location.state || {};
-  const callAPI = async () => {
-    const dataRes = await apiProduct(category);
+  const callAPI = async (selectedCategory?: string) => {
+    const dataRes = await apiProduct(selectedCategory ||category);
     setProduct(dataRes.items);
+    
   };
   useEffect(() => {
     callAPI();
   }, [category]);
 
+
+useEffect(()=>{
+  const fetchOption = async () =>{
+    const categoryRes = await apiCategories ()
+    setCategories(categoryRes.items)  
+  }
+  fetchOption()
+},[])
+
+  
+
   const handleChange = (event: SelectChangeEvent) => {
-    setOption(event.target.value as string);
+    const selectedCategory = event.target.value;
+    setOption(selectedCategory);
+    callAPI(selectedCategory); // Fetch sản phẩm khi lựa chọn một danh mục
   };
 
   const navigate = useNavigate();
@@ -70,9 +85,11 @@ function Food() {
                 label="Option"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Burger</MenuItem>
-                <MenuItem value={20}>Pizza</MenuItem>
-                <MenuItem value={30}>Bread</MenuItem>
+                   {categories.map((items: any) => (
+                  <MenuItem key={items.id} value={items.id}>
+                    {items.name} {/* Hiển thị tên danh mục */}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
