@@ -53,15 +53,24 @@ function MyOrder() {
       console.error('Không thể lấy thông tin đơn hàng:', error);
     }
   };
-  
-  const handleCancle = () => {
+
+  const handleCancel = () => {
     navigate('/homedetails');
   };
   const statusText = (status: number) => {
     switch (status) {
       case 0:
         return 'Created';
-    
+      case 1:
+        return 'Cooking';
+      case 2:
+        return 'Ongoing';
+      case 3:
+        return 'Received';
+      case 5:
+        return 'Completed';
+      case 10:
+        return 'Canceled';
       default:
         return 'Unknown';
     }
@@ -103,118 +112,128 @@ function MyOrder() {
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
-            {order.slice().reverse().map((item, index) => (
-              <div key={index}>
-                <p className="text-sm text-red-500">
-                  {statusText(item.status)}
-                </p>
-                <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={Fish}
-                      alt="Fish"
-                      className="w-16 h-16 rounded-md"
-                    />
-                    <div>
-                      <p className="text-base font-medium">
-                        Number of Product: {item.productCount}{' '}
-                      </p>
-                      <p className="text-sm text-gray-500">{item.totalPrice.toLocaleString('VN-vi')}</p>
+            {order
+              .slice()
+              .reverse()
+              .map((item, index) => (
+                <div key={index}>
+                  <p className="text-sm text-red-500">
+                    {statusText(item.status)}
+                  </p>
+                  <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={Fish}
+                        alt="Fish"
+                        className="w-16 h-16 rounded-md"
+                      />
+                      <div>
+                        <p className="text-base font-medium">
+                          Number of Product: {item.productCount}{' '}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {item.totalPrice.toLocaleString('VN-vi')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-around mt-4 gap-4">
+                      <Button
+                        htmlType="submit"
+                        type="primary"
+                        className="w-full"
+                        size="large"
+                        style={{
+                          backgroundColor: '#FF7622',
+                          color: 'white',
+                          border: 'none'
+                        }}
+                        onClick={() => handleTrackOrder(item.id)}
+                      >
+                        Track Order
+                      </Button>
+                      <Button
+                        htmlType="submit"
+                        type="primary"
+                        className="w-full"
+                        size="large"
+                        danger
+                        style={{
+                          backgroundColor: '#fff',
+                          borderColor: '#FF7622',
+                          color: '#FF7622'
+                        }}
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex justify-around mt-4 gap-4">
-                    <Button
-                      htmlType="submit"
-                      type="primary"
-                      className="w-full"
-                      size="large"
-                      style={{
-                        backgroundColor: '#FF7622',
-                        color: 'white',
-                        border: 'none'
-                      }}
-                      onClick={() => handleTrackOrder(item.id)} 
-                    >
-                      Track Order
-                    </Button>
-                    <Button
-                      htmlType="submit"
-                      type="primary"
-                      className="w-full"
-                      size="large"
-                      danger
-                      style={{
-                        backgroundColor: '#fff',
-                        borderColor: '#FF7622',
-                        color: '#FF7622'
-                      }}
-                      onClick={handleCancle}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </Card>
         )}
         {tabValue === 1 && (
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
-            {order.slice().reverse().map((item, index) => (
-              <div key={index}>
-                <p className="text-sm text-red-500">
-                  {statusText(item.status)}
-                </p>
-                <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={Fish}
-                      alt="Fish"
-                      className="w-16 h-16 rounded-md"
-                    />
-                    <div>
-                      <p className="text-base font-medium">
-                        Number of Product: {item.productCount}{' '}
-                      </p>
-                      <p className="text-sm text-gray-500">{item.totalPrice.toLocaleString('VN-vi')}</p>
+            {order
+              .slice()
+              .reverse()
+              .map((item, index) => (
+                <div key={index}>
+                  <p className="text-sm text-red-500">
+                    {statusText(item.status)}
+                  </p>
+                  <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={Fish}
+                        alt="Fish"
+                        className="w-16 h-16 rounded-md"
+                      />
+                      <div>
+                        <p className="text-base font-medium">
+                          Number of Product: {item.productCount}{' '}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {item.totalPrice.toLocaleString('VN-vi')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-around mt-4 gap-4">
+                      <Button
+                        htmlType="submit"
+                        type="primary"
+                        className="w-full"
+                        size="large"
+                        style={{
+                          backgroundColor: '#FF7622',
+                          color: 'white',
+                          border: 'none'
+                        }}
+                        onClick={() => handleTrackOrder(item.id)}
+                      >
+                        Track Order
+                      </Button>
+                      <Button
+                        htmlType="submit"
+                        type="primary"
+                        className="w-full"
+                        size="large"
+                        danger
+                        style={{
+                          backgroundColor: '#fff',
+                          borderColor: '#FF7622',
+                          color: '#FF7622'
+                        }}
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex justify-around mt-4 gap-4">
-                    <Button
-                      htmlType="submit"
-                      type="primary"
-                      className="w-full"
-                      size="large"
-                      style={{
-                        backgroundColor: '#FF7622',
-                        color: 'white',
-                        border: 'none'
-                      }}
-                      onClick={() => handleTrackOrder(item.id)} 
-                    >
-                      Track Order
-                    </Button>
-                    <Button
-                      htmlType="submit"
-                      type="primary"
-                      className="w-full"
-                      size="large"
-                      danger
-                      style={{
-                        backgroundColor: '#fff',
-                        borderColor: '#FF7622',
-                        color: '#FF7622'
-                      }}
-                      onClick={handleCancle}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </Card>
         )}
       </Box>

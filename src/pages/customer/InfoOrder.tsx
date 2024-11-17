@@ -3,6 +3,8 @@ import Address from '../../img/pin.png';
 import Fish from '../../img/Fish.png';
 import { Button, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { apiCancelOrder, apiConfirmReceiveOrder } from '../../api/order';
+import { useAppSelector } from '../../redux/hook';
 
 interface OrderDetail {
   productId: number;
@@ -20,25 +22,63 @@ interface Order {
 function InfoOrder() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { token } = useAppSelector((state) => state.authState);
+
   const { orderDetails }: { orderDetails: Order } = location.state || {
     orderDetails: { id: 0, status: 0, details: [] }
   };
 
-  const handleReceived = () => {
-    message.success('Cảm ơn bạn đã mua hàng bên chúng tôi!', 3);
-    setTimeout(() => {
-      navigate('/homedetails');
-    }, 3000);
+  const handleReceived = async () => {
+    try {
+      const dataRes = await apiConfirmReceiveOrder({
+        orderId: orderDetails.id.toString(),
+        token: token
+      });
+
+      if (dataRes) {
+        message.success(dataRes);
+
+        setTimeout(() => {
+          navigate('/homedetails');
+        }, 3000);
+      }
+    } catch (err: any) {
+      alert(err.response.data);
+    }
   };
-  const handleCancle = () => {
-    navigate('/home');
+  const handleCancel = async () => {
+    try {
+      const dataRes = await apiCancelOrder({
+        orderId: orderDetails.id.toString(),
+        token: token
+      });
+
+      if (dataRes) {
+        message.success(dataRes.data);
+
+        setTimeout(() => {
+          navigate('/home');
+        }, 3000);
+      }
+    } catch (err: any) {
+      alert(err.response.data);
+    }
   };
 
   const statusText = (status: number) => {
     switch (status) {
       case 0:
         return 'Created';
-
+      case 1:
+        return 'Cooking';
+      case 2:
+        return 'Ongoing';
+      case 3:
+        return 'Received';
+      case 5:
+        return 'Completed';
+      case 10:
+        return 'Canceled';
       default:
         return 'Unknown';
     }
@@ -76,7 +116,10 @@ function InfoOrder() {
       <div className="px-3 py-3  max-h-[290px] overflow-y-auto">
         {orderDetails.details &&
           orderDetails.details.map((item, index) => (
-            <div key={index} className="shadow-md rounded-md flex gap-3 mb-3">
+            <div
+              key={index}
+              className="shadow-md w-full rounded-md flex gap-3 mb-3"
+            >
               <img className="w-20 h-20" src={Fish} alt="Product" />
               <div>
                 <p className="text-lg font-semibold">{item.productName}</p>
@@ -85,8 +128,8 @@ function InfoOrder() {
                     Quantity: {item.quantity}
                   </p>
                 </div>
-                <p className="pl-56 text-lg font-medium">
-                  {(item.quantity * item.unitPrice).toLocaleString()}
+                <p className="text-end text-lg font-medium">
+                  {(item.quantity * item.unitPrice).toLocaleString()}đ
                 </p>
               </div>
             </div>
@@ -117,9 +160,9 @@ function InfoOrder() {
           }}
           className="w-full h-12 text-lg"
           type="primary"
-          onClick={handleCancle}
+          onClick={handleCancel}
         >
-          Cancle
+          Canc
         </Button>
       </div>
     </div>

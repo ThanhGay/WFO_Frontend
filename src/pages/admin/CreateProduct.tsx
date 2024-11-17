@@ -76,11 +76,10 @@ function CreateProduct() {
       token
     );
 
-    if (dataRes){
+    if (dataRes) {
       alert('Thanh cong');
-      ('')
-    } 
-    console.log('data',dataRes);
+    }
+    console.log('data', dataRes);
   };
 
   const uploadButton = (
@@ -122,7 +121,7 @@ function CreateProduct() {
           />
         </Form.Item>
         <Form.Item name={'productCategory'} label="Phân loại">
-          <Select placeholder="Chọn phân loại sản phẩm"  />
+          <Select placeholder="Chọn phân loại sản phẩm" />
         </Form.Item>
         <Form.Item
           name={'productImage'}

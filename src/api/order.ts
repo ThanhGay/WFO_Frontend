@@ -1,9 +1,13 @@
 import axios from 'axios';
+import { sendPostFormDataWithToken } from '../utils';
 
-export const apiCreateOrder = async(args: { cartIds: number[] },token:string) => {
+export const apiCreateOrder = async (
+  args: { cartIds: number[] },
+  token: string
+) => {
   const url = `${process.env.REACT_APP_API_URL}/api/order/create`;
   const reqBody = {
-    cartIds: args.cartIds,
+    cartIds: args.cartIds
   };
   const config = {
     headers: {
@@ -12,12 +16,12 @@ export const apiCreateOrder = async(args: { cartIds: number[] },token:string) =>
     }
   };
 
-  const res = await axios.post(url, reqBody,config);
+  const res = await axios.post(url, reqBody, config);
 
   return res;
 };
 
-export const apiGetMyOrder = async(token:string) => {
+export const apiGetMyOrder = async (token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/order/my-orders`;
 
   const config = {
@@ -27,12 +31,12 @@ export const apiGetMyOrder = async(token:string) => {
     }
   };
 
-  const res = await axios.get(url,config);
+  const res = await axios.get(url, config);
 
   return res;
 };
 
-export const apiOrderDetails = async(token:string,id:number) => {
+export const apiOrderDetails = async (token: string, id: number) => {
   const url = `${process.env.REACT_APP_API_URL}/api/order/detail/${id}`;
 
   const config = {
@@ -42,7 +46,39 @@ export const apiOrderDetails = async(token:string,id:number) => {
     }
   };
 
-  const res = await axios.get(url,config);
+  const res = await axios.get(url, config);
+
+  return res;
+};
+
+export const apiConfirmReceiveOrder = async (args: {
+  orderId: string;
+  token: string;
+}) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/order/received`;
+
+  return sendPostFormDataWithToken({
+    url: url,
+    data: { orderId: args.orderId },
+    token: args.token
+  });
+};
+
+export const apiCancelOrder = async (args: {
+  orderId: string;
+  token: string;
+}) => {
+  const { orderId, token } = args;
+  const url = `${process.env.REACT_APP_API_URL}/api/order/cancel/${orderId}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const res = await axios.delete(url, config);
 
   return res;
 };
