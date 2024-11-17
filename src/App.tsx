@@ -26,6 +26,7 @@ import { usePageAuth } from './utils/hooks';
 import OrderSuccess from './pages/customer/OrderSuccess';
 import EditAdress from './pages/customer/EditAdress';
 import MyOrder from './pages/customer/MyOrder';
+import InfoOrder from './pages/customer/InfoOrder';
 
 function App() {
   // usePageAuth()
@@ -50,6 +51,7 @@ function App() {
       <Route path="/ordersuccess" element={<OrderSuccess/>} />
       <Route path="/editaddress" element={<EditAdress/>} />
       <Route path="/myorder" element={<MyOrder />} />
+      <Route path="/myorder/infomationorder" element={<InfoOrder />} />
 
       <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin/product/update" element={<UpdateProduct />} />

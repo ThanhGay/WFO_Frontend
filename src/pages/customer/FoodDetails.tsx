@@ -75,7 +75,7 @@ function FoodDetails() {
       </div>
 
       <div className="fixed bottom-10 w-full  ">
-        <div className="flex items-center justify-between bg-gray-100 p-2 rounded-lg max-w-sm mx-auto ">
+        <div className="flex items-center justify-between bg-gray-100 p-2 rounded-lg max-w-screen-md mx-auto ">
           <span className="font-semibold text-xl">{totalPrice.toLocaleString('VN-vi')}đ</span>
           <div className="flex items-center rounded-full bg-black p-2 ">
             <button
