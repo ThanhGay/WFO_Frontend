@@ -162,7 +162,7 @@ function InfoOrder() {
           type="primary"
           onClick={handleCancel}
         >
-          Canc
+          Cancle
         </Button>
       </div>
     </div>
