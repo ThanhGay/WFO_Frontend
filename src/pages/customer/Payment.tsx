@@ -109,7 +109,7 @@ function Payment() {
       <div className="flex justify-between bg-slate-200 rounded-lg py-4">
         <p className="font-semibold text-lg pl-1 text-slate-400">Total</p>
         <p className="font-bold text-xl pr-2">
-          {totalPrice.toLocaleString('VN-vi')}
+          {totalPrice.toLocaleString('VN-vi')} đ
         </p>
       </div>
 

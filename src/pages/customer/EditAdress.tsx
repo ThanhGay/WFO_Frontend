@@ -1,10 +1,10 @@
-import { Form, Input, Button, message } from "antd";
-import BackHeader from "../../components/header/BackHeader";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { apiUpdateUser } from "../../api/user";
-import { setDataUser } from "../../redux/features/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Form, Input, Button, message } from 'antd';
+import BackHeader from '../../components/header/BackHeader';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { apiUpdateUser } from '../../api/user';
+import { setDataUser } from '../../redux/features/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 function EditAdress() {
   const [messageAntd, contextHolder] = message.useMessage();
@@ -14,20 +14,23 @@ function EditAdress() {
 
   const handleConfirm = async (values: any) => {
     try {
+
       const updatedUser = {
-        firstName: user?.firstName, 
-        lastName: user?.lastName, 
+        firstName: user?.firstName,
+        lastName: user?.lastName,
         dateOfBirth: user?.dateOfBirth,
-        sex: user?.sex, 
+        sex: user?.sex,
         phone: values.phone,
         address: values.address
       };
+
 
       const response = await apiUpdateUser(updatedUser, token);
 
       if (response.status === 200) {
         dispatch(setDataUser(response.data));
         messageAntd.success('Cập nhật thông tin thành công!');
+        navigate(-1);
       } else {
         messageAntd.error('Cập nhật thất bại!');
       }
@@ -56,10 +59,7 @@ function EditAdress() {
           style={{
             backgroundColor: '#F0F5FA',
             padding: 16,
-            borderRadius: 16,
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
+            borderRadius: 16
           }}
         >
           <Form.Item
@@ -95,24 +95,23 @@ function EditAdress() {
               style={{ color: 'black' }}
             />
           </Form.Item>
+
+          <Form.Item style={{ width: '100%', maxWidth: '300px' }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                textTransform: 'capitalize',
+                width: '150%',
+                padding: 24,
+                backgroundColor: '#FF7622'
+              }}
+            >
+              Confirm
+            </Button>
+          </Form.Item>
         </Form>
       </div>
-
-      <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          style={{
-            textTransform: 'capitalize',
-            width: '100%',
-            padding: 24,
-            backgroundColor: '#FF7622',
-          }}
-          onClick={handleConfirm}
-        >
-          Confirm
-        </Button>
-      </Form.Item>
     </div>
   );
 }
