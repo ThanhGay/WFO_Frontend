@@ -141,7 +141,7 @@ function Cart() {
       <div className="overflow-y-auto max-h-[calc(100vh-200px)] no-scrollbar">
         {cart.length === 0 ? (
           <div className="flex flex-col justify-center py-10 items-center">
-            <img className='size-36 opacity-15' src={No_shopping}/>
+            <img className='size-36 opacity-15' alt='' src={No_shopping}/>
             <p className="text-lg font-medium text-gray-500">
               Your cart is empty.
             </p>

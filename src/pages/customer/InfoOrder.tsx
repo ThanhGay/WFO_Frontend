@@ -22,7 +22,7 @@ interface Order {
 function InfoOrder() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { token } = useAppSelector((state) => state.authState);
+  const { token, user } = useAppSelector((state) => state.authState);
 
   const { orderDetails }: { orderDetails: Order } = location.state || {
     orderDetails: { id: 0, status: 0, details: [] }
@@ -101,11 +101,11 @@ function InfoOrder() {
               <img className="size-4 " src={Address} />
               <div className="pl-3">
                 <div className="flex">
-                  <p className="font-medium">Do Duy Khanh</p>
-                  <p className="pl-3 text-slate-400">0345678865</p>
+                  <p className="font-medium">{user?.fullName}</p>
+                  <p className="pl-3 text-slate-400">{user?.phone}</p>
                 </div>
                 <p className="text-sm text-slate-600">
-                  So 10 nha 2 nguyen tat thanh ha noi hasfsdfsdfsfsdfafsfsf
+                  {user?.address}
                 </p>
               </div>
             </div>
@@ -162,7 +162,7 @@ function InfoOrder() {
           type="primary"
           onClick={handleCancel}
         >
-          Cancle
+          Cancel
         </Button>
       </div>
     </div>

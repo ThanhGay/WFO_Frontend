@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Card, Tab, Tabs } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../redux/hook';
-import No_order from '../../img/no-order.png'
+import No_order from '../../img/no-order.png';
 import {
   apiCancelOrder,
   apiGetMyOrder,
   apiOrderDetails
 } from '../../api/order';
 import { apiDeleteCart } from '../../api/cart';
+import dayjs from 'dayjs';
 
 interface OrderItem {
   id: number;
@@ -60,7 +61,7 @@ function MyOrder() {
     }
   };
 
-  const handleCancle = (orderId: number) => {
+  const handleCancel = (orderId: number) => {
     Modal.confirm({
       title: 'Are you sure you want to cancel this order?',
       content: 'This action cannot be undone.',
@@ -164,7 +165,7 @@ function MyOrder() {
             {order.filter((item) => [0, 1, 2].includes(item.status)).length ===
             0 ? (
               <div className=" flex flex-col justify-center py-10 items-center">
-                <img className='size-36' src={No_order}/>
+                <img className="size-36" src={No_order} />
                 <p className="text-lg font-medium text-gray-500">
                   You have no on going orders.
                 </p>
@@ -175,14 +176,17 @@ function MyOrder() {
                 .slice()
                 .reverse()
                 .map((item, index) => (
-                  <div key={index}>
+                  <div key={index} className="py-2">
                     <p
-                      className="text-sm font-medium"
+                      className="text-sm font-medium p-2"
                       style={{ color: statusText(item.status).color }}
                     >
                       {statusText(item.status).text}
                     </p>
-                    <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
+                    <div className="bg-slate-50 rounded-2xl shadow-xl p-4 relative">
+                      <div className="top-4 right-4 absolute text-xs underline text-[#6B6E82]">
+                        #{item.id}
+                      </div>
                       <div className="flex items-center gap-4">
                         <img
                           src={Fish}
@@ -191,11 +195,19 @@ function MyOrder() {
                         />
                         <div>
                           <p className="text-base font-medium">
-                            Number of Product: {item.productCount}{' '}
+                            Nhà hàng 3 chúng mình
                           </p>
-                          <p className="text-sm text-gray-500">
-                            {item.totalPrice.toLocaleString('VN-vi')}
-                          </p>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <p>{item.totalPrice.toLocaleString('VN-vi')}đ</p>
+                            <div className="flex gap-1">
+                              <p>{item.productCount}</p>
+                              <p>
+                                {parseInt(item.productCount) > 1
+                                  ? 'Items'
+                                  : 'Item'}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="flex justify-around mt-4 gap-4">
@@ -224,7 +236,7 @@ function MyOrder() {
                             borderColor: '#FF7622',
                             color: '#FF7622'
                           }}
-                          onClick={() => handleCancle(item.id)}
+                          onClick={() => handleCancel(item.id)}
                         >
                           Cancel
                         </Button>
@@ -243,14 +255,17 @@ function MyOrder() {
             {order
               .filter((item) => [3, 5, 10].includes(item.status))
               .map((item, index) => (
-                <div key={index}>
+                <div key={index} className="py-2">
                   <p
-                    className="text-sm font-medium"
+                    className="text-sm font-medium p-2"
                     style={{ color: statusText(item.status).color }}
                   >
                     {statusText(item.status).text}
                   </p>
-                  <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
+                  <div className="bg-slate-50 rounded-2xl shadow-xl p-4 relative">
+                    <div className="top-4 right-4 absolute text-xs underline text-[#6B6E82]">
+                      #{item.id}
+                    </div>
                     <div className="flex items-center gap-4">
                       <img
                         src={Fish}
@@ -259,15 +274,23 @@ function MyOrder() {
                       />
                       <div>
                         <p className="text-base font-medium">
-                          Number of Product: {item.productCount}{' '}
+                          Nhà hàng 3 chúng mình
                         </p>
-                        <div className="flex items-center">
-                          <p className="text-sm text-gray-500">
-                            {item.totalPrice.toLocaleString('VN-vi')}
+                        <div className="flex gap-2 items-center text-sm text-gray-500">
+                          <p>{item.totalPrice.toLocaleString('VN-vi')}đ</p>
+                          <p className="line-clamp-1 ">
+                            {dayjs(item.completedAt || item.canceledAt).format(
+                              'DD MMM - HH:mm'
+                            )}
                           </p>
-                          <p className="text-sm text-gray-500 pl-2 line-clamp-1 ">
-                            | {item.completedAt || item.canceledAt}
-                          </p>
+                          <div className="flex gap-1">
+                            <p>{item.productCount}</p>
+                            <p>
+                              {parseInt(item.productCount) > 1
+                                ? 'Items'
+                                : 'Item'}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
