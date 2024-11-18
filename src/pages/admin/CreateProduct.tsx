@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { GetProp, UploadProps } from 'antd';
 import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import BackHeader from '../../components/header/BackHeader';
 import { useAppSelector } from '../../../src/redux/hook';
-import { apiPostProduct } from '../../../src/api/product';
+import { apiCategories, apiPostProduct } from '../../../src/api/product';
 import { useNavigate } from 'react-router-dom';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -21,15 +21,27 @@ type FormValueProps = {
   productPrice: number;
   productSize: string;
   productImage: File | undefined;
-  productCategory: number | undefined;
+  productCategory: string;
 };
 
 function CreateProduct() {
   const [form] = Form.useForm();
   const { TextArea } = Input;
+  const navigate = useNavigate();
 
   const { token } = useAppSelector((state) => state.authState);
+
   const [imageUrl, setImageUrl] = useState<string>();
+
+  const [categories, setCategories] = useState<any[]>([]);
+  useEffect(() => {
+    (async () => {
+      const dataRes = await apiCategories();
+      if (dataRes) {
+        setCategories(dataRes.items);
+      }
+    })();
+  }, [token]);
 
   const beforeUpload = (file: FileType) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -71,15 +83,15 @@ function CreateProduct() {
         price: values.productPrice,
         size: values.productSize,
         imageFile: values.productImage,
-        categoryId: values.productCategory
+        categoryId: parseInt(values.productCategory)
       },
       token
     );
 
     if (dataRes) {
       alert('Thanh cong');
+      navigate(-1);
     }
-    console.log('data', dataRes);
   };
 
   const uploadButton = (
@@ -121,7 +133,15 @@ function CreateProduct() {
           />
         </Form.Item>
         <Form.Item name={'productCategory'} label="Phân loại">
-          <Select placeholder="Chọn phân loại sản phẩm" />
+          <Select
+            placeholder="Chọn phân loại sản phẩm"
+            options={categories.map((item: any) => {
+              return {
+                value: item.id,
+                label: item.name
+              };
+            })}
+          />
         </Form.Item>
         <Form.Item
           name={'productImage'}
