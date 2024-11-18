@@ -1,11 +1,17 @@
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import BackHeader from '../../components/header/BackHeader';
 import Fish from '../../img/Fish.png';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, Tab, Tabs } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../redux/hook';
-import { apiGetMyOrder, apiOrderDetails } from '../../api/order';
+import No_order from '../../img/no-order.png'
+import {
+  apiCancelOrder,
+  apiGetMyOrder,
+  apiOrderDetails
+} from '../../api/order';
+import { apiDeleteCart } from '../../api/cart';
 
 interface OrderItem {
   id: number;
@@ -41,7 +47,7 @@ function MyOrder() {
   const handleTrackOrder = async (id: number) => {
     try {
       const response = await apiOrderDetails(token, id);
-      const orderDetails = response.data; // Giả sử API trả về chi tiết đơn hàng trực tiếp.
+      const orderDetails = response.data;
 
       if (orderDetails) {
         console.log('Chi tiết đơn hàng:', orderDetails);
@@ -54,25 +60,60 @@ function MyOrder() {
     }
   };
 
-  const handleCancel = () => {
-    navigate('/homedetails');
+  const handleCancle = (orderId: number) => {
+    Modal.confirm({
+      title: 'Are you sure you want to cancel this order?',
+      content: 'This action cannot be undone.',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          const response = await apiCancelOrder({
+            orderId: orderId.toString(),
+            token
+          });
+          if (response?.status === 200) {
+            console.log('Đơn hàng đã hủy:', response.data);
+            setOrder((prevOrders) =>
+              prevOrders.map((item) =>
+                item.id === orderId
+                  ? {
+                      ...item,
+                      status: 10,
+                      canceledAt: new Date().toISOString()
+                    }
+                  : item
+              )
+            );
+          } else {
+            console.error('Không thể hủy đơn hàng:', response?.data?.message);
+          }
+        } catch (error) {
+          console.error('Lỗi khi hủy đơn hàng:', error);
+        }
+      },
+      onCancel() {
+        console.log('Hủy bỏ hành động');
+      }
+    });
   };
+
   const statusText = (status: number) => {
     switch (status) {
       case 0:
-        return 'Created';
+        return { text: 'Created', color: '#FFB020' };
       case 1:
-        return 'Cooking';
+        return { text: 'Cooking', color: '#F6C000' };
       case 2:
-        return 'Ongoing';
+        return { text: 'Ongoing', color: '#2196F3' };
       case 3:
-        return 'Received';
+        return { text: 'Received', color: '#FF99FF' };
       case 5:
-        return 'Completed';
+        return { text: 'Completed', color: '#8BC34A' };
       case 10:
-        return 'Canceled';
+        return { text: 'Canceled', color: '#F44336' };
       default:
-        return 'Unknown';
+        return { text: 'Unknown', color: '#9E9E9E' };
     }
   };
   return (
@@ -84,11 +125,19 @@ function MyOrder() {
           value={tabValue}
           onChange={handleTabChange}
           aria-label="lecturer tabs"
-          TabIndicatorProps={{ style: { backgroundColor: '#A6C8FF' } }}
+          TabIndicatorProps={{ style: { backgroundColor: '#FF7622' } }}
           centered
           sx={{
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            '& .MuiTab-root': {
+              color: '#DCDCDC',
+              fontWeight: 'normal'
+            },
+            '& .Mui-selected': {
+              color: '#FF6600',
+              fontWeight: 'bold'
+            }
           }}
         >
           <Tab
@@ -112,77 +161,94 @@ function MyOrder() {
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
-            {order
-              .slice()
-              .reverse()
-              .map((item, index) => (
-                <div key={index}>
-                  <p className="text-sm text-red-500">
-                    {statusText(item.status)}
-                  </p>
-                  <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={Fish}
-                        alt="Fish"
-                        className="w-16 h-16 rounded-md"
-                      />
-                      <div>
-                        <p className="text-base font-medium">
-                          Number of Product: {item.productCount}{' '}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {item.totalPrice.toLocaleString('VN-vi')}
-                        </p>
+            {order.filter((item) => [0, 1, 2].includes(item.status)).length ===
+            0 ? (
+              <div className=" flex flex-col justify-center py-10 items-center">
+                <img className='size-36' src={No_order}/>
+                <p className="text-lg font-medium text-gray-500">
+                  You have no on going orders.
+                </p>
+              </div>
+            ) : (
+              order
+                .filter((item) => [0, 1, 2].includes(item.status))
+                .slice()
+                .reverse()
+                .map((item, index) => (
+                  <div key={index}>
+                    <p
+                      className="text-sm font-medium"
+                      style={{ color: statusText(item.status).color }}
+                    >
+                      {statusText(item.status).text}
+                    </p>
+                    <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={Fish}
+                          alt="Fish"
+                          className="w-16 h-16 rounded-md"
+                        />
+                        <div>
+                          <p className="text-base font-medium">
+                            Number of Product: {item.productCount}{' '}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {item.totalPrice.toLocaleString('VN-vi')}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex justify-around mt-4 gap-4">
+                        <Button
+                          htmlType="submit"
+                          type="primary"
+                          className="w-full"
+                          size="large"
+                          style={{
+                            backgroundColor: '#FF7622',
+                            color: 'white',
+                            border: 'none'
+                          }}
+                          onClick={() => handleTrackOrder(item.id)}
+                        >
+                          Track Order
+                        </Button>
+                        <Button
+                          htmlType="submit"
+                          type="primary"
+                          className="w-full"
+                          size="large"
+                          danger
+                          style={{
+                            backgroundColor: '#fff',
+                            borderColor: '#FF7622',
+                            color: '#FF7622'
+                          }}
+                          onClick={() => handleCancle(item.id)}
+                        >
+                          Cancel
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex justify-around mt-4 gap-4">
-                      <Button
-                        htmlType="submit"
-                        type="primary"
-                        className="w-full"
-                        size="large"
-                        style={{
-                          backgroundColor: '#FF7622',
-                          color: 'white',
-                          border: 'none'
-                        }}
-                        onClick={() => handleTrackOrder(item.id)}
-                      >
-                        Track Order
-                      </Button>
-                      <Button
-                        htmlType="submit"
-                        type="primary"
-                        className="w-full"
-                        size="large"
-                        danger
-                        style={{
-                          backgroundColor: '#fff',
-                          borderColor: '#FF7622',
-                          color: '#FF7622'
-                        }}
-                        onClick={handleCancel}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+            )}
           </Card>
         )}
+
         {tabValue === 1 && (
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
             {order
-              .slice()
-              .reverse()
+              .filter((item) => [3, 5, 10].includes(item.status))
               .map((item, index) => (
                 <div key={index}>
-                  <p className="text-sm text-red-500">
-                    {statusText(item.status)}
+                  <p
+                    className="text-sm font-medium"
+                    style={{ color: statusText(item.status).color }}
+                  >
+                    {statusText(item.status).text}
                   </p>
                   <div className="bg-slate-50 rounded-2xl shadow-xl p-4">
                     <div className="flex items-center gap-4">
@@ -195,9 +261,14 @@ function MyOrder() {
                         <p className="text-base font-medium">
                           Number of Product: {item.productCount}{' '}
                         </p>
-                        <p className="text-sm text-gray-500">
-                          {item.totalPrice.toLocaleString('VN-vi')}
-                        </p>
+                        <div className="flex items-center">
+                          <p className="text-sm text-gray-500">
+                            {item.totalPrice.toLocaleString('VN-vi')}
+                          </p>
+                          <p className="text-sm text-gray-500 pl-2 line-clamp-1 ">
+                            | {item.completedAt || item.canceledAt}
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div className="flex justify-around mt-4 gap-4">
@@ -213,22 +284,7 @@ function MyOrder() {
                         }}
                         onClick={() => handleTrackOrder(item.id)}
                       >
-                        Track Order
-                      </Button>
-                      <Button
-                        htmlType="submit"
-                        type="primary"
-                        className="w-full"
-                        size="large"
-                        danger
-                        style={{
-                          backgroundColor: '#fff',
-                          borderColor: '#FF7622',
-                          color: '#FF7622'
-                        }}
-                        onClick={handleCancel}
-                      >
-                        Cancel
+                        View
                       </Button>
                     </div>
                   </div>
