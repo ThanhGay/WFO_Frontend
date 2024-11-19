@@ -16,10 +16,7 @@ function AddCategories() {
   const [imageFile, setImageFile] = useState<string>('');
   const [name, setName] = useState<string>('');
   const handleConfirm = async (values: FormValueProps) => {
-    console.log(values);
-
     try {
-      // Gửi tên và file ảnh đã được xử lý (base64 hoặc URL)
       const response = await apiAddCategories(
         {
           name: values.name,

@@ -23,7 +23,7 @@ interface Category {
   id: number;
   name: string;
   image: string;
-  imageFile?: string | null; // Thêm để xử lý tệp
+  imageFile: any;
   createdDate: string | null;
   updateDate: string | null;
 }
@@ -53,7 +53,7 @@ function Categories() {
           id: currentCategory.id.toString(),
           name: currentCategory.name,
           image: currentCategory.image || '',
-          imagefile: currentCategory.imageFile || '' // Tệp ảnh dưới dạng base64
+          imagefile: currentCategory.imageFile, // Tệp ảnh dưới dạng base64
         };
 
         const res = await apiUpdateCategories(args, token);
@@ -83,17 +83,11 @@ function Categories() {
   };
 
   const handleFileChange = (file: File) => {
-    console.log(file); // Check if the file is being selected properly
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      console.log(e.target?.result); // Log the base64 string
-      setCurrentCategory((prev) => {
-        if (!prev) return null;
-        return { ...prev, imageFile: e.target?.result?.toString() || '' }; // Set the base64 string
-      });
-    };
-    reader.readAsDataURL(file); // Convert the file to base64
-  };
+    setCurrentCategory((prev) => {
+      if (!prev) return null;
+      return { ...prev, imageFile: file }; // Lưu tệp ảnh
+    });
+  }
 
   useEffect(() => {
     (async () => {

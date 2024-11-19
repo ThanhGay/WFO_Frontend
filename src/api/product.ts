@@ -96,7 +96,7 @@ export const apiUpdateProduct = async (
     description: string;
     price: string;
     image: string;
-    imagefile: string ;
+    imagefile: File ;
     size: string;
     categoryId: string;
 
@@ -126,8 +126,8 @@ export const apiUpdateProduct = async (
   return res;
 };
 
-export const apiDeleteProduct = async (productId: number, token: string) => {
-  const url = `${process.env.REACT_APP_API_URL}/api/product/delete?productId=${productId}`;
+export const apiDeleteProduct = async (id: number, token: string) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/product/delete?id=${id}`;
 
   const config = {
     headers: {

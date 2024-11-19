@@ -40,7 +40,7 @@ interface Product {
   name: string;
   description: string;
   image: string;
-  imageFile?: string | null;
+  imageFile?: any;
   size: string;
   categoryId: string;
   price: string;
@@ -60,6 +60,7 @@ function ProductEdit() {
   const [categories, setCategories] = useState<Category[]>([]);
   const location = useLocation();
   const { category } = location.state || {};
+  
   const callAPI = async (selectedCategory?: string) => {
     const dataRes = await apiProduct(selectedCategory || category);
     setProduct(dataRes.items);
@@ -104,7 +105,7 @@ function ProductEdit() {
           id: currentProduct.id, // Chuyển đổi sang number
           name: currentProduct.name,
           image: currentProduct.image || '',
-          imagefile: currentProduct.imageFile || '', // Tệp ảnh dưới dạng base64
+          imagefile: currentProduct.imageFile,
           description: currentProduct.description,
           size: currentProduct.size,
           price: currentProduct.price,
@@ -123,7 +124,7 @@ function ProductEdit() {
           )
         );
 
-        handleClose(); // Đóng dialog
+        handleClose(); 
       } catch (error) {
         console.error('Lỗi khi cập nhật danh mục:', error);
       }
@@ -138,38 +139,34 @@ function ProductEdit() {
   };
 
   const handleFileChange = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setCurrentProduct((prev) => {
-        if (!prev) return null;
-        return { ...prev, imageFile: e.target?.result?.toString() || '' }; // Chuyển sang string
-      });
-    };
-    reader.readAsDataURL(file); // Chuyển file sang base64 string
+    setCurrentProduct((prev) => {
+      if (!prev) return null;
+      return { ...prev, imageFile: file };
+    });
   };
 
-  const handleDeleteProduct = (productId: number) => {
+  const handleDeleteProduct = (id: number) => {
     confirm({
       title: 'Delete Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: 'Are you sure you want to delete this category?',
+      content: 'Are you sure you want to delete this product?',
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk: async () => {
         try {
-          const res = await apiDeleteProduct(productId, token);
+          const res = await apiDeleteProduct(id, token);
           if (res.status === 200) {
             alert('Delete product successfully');
-            setCategories((prev) =>
-              prev.filter((item) => item.id !== productId)
+            setProduct((prev) =>
+              prev.filter((item) => item.id !== id.toString())
             );
           } else {
             alert('An error occurred');
           }
         } catch (error) {
-          console.error('Error when deleting product type:', error);
-          alert('An error occurred while deleting the product type');
+          console.error('Error when deleting product :', error);
+          alert('An error occurred while deleting the product ');
         }
       },
       onCancel() {
@@ -209,7 +206,7 @@ function ProductEdit() {
               >
                 {categories.map((items: any) => (
                   <MenuItem key={items.id} value={items.id}>
-                    {items.name} {/* Hiển thị tên danh mục */}
+                    {items.name}
                   </MenuItem>
                 ))}
               </Select>
@@ -222,20 +219,10 @@ function ProductEdit() {
       </div>
       <div className="  ">
         {product.map((item: any) => (
-          //   <CartFood
-          //   key={item.id}
-          //     imageSrc={item?.image ? `${process.env.REACT_APP_API_URL}/${item.image}`: Burger1}
-          //     navigateTo={`/homedetails/food/fooddetails`}
-          //     textMeal={item.name}
-          //     textSize={item.size}
-          //     textPrice={item.price.toLocaleString('VN-vi')}
-          //     textRestaurant={item.description}
-          //     id={item.id}
-          //   />
-          <div className="overflow-auto gap-3 py-4">
-            <div className="bg-slate-400 w-full rounded-lg flex gap-4">
+          <div className="overflow-auto  gap-3 py-4">
+            <div className="bg-slate-300 w-full h-28  rounded-lg flex gap-4 relative">
               <img
-                className="size-20 rounded-lg  "
+                className=" w-28 h-28 rounded-lg  "
                 src={
                   item?.image
                     ? `${process.env.REACT_APP_API_URL}/${item.image}`
@@ -245,18 +232,20 @@ function ProductEdit() {
               <div>
                 <div className="flex gap-8 ">
                   <p className="text-lg font-medium">{item.name}</p>
-                  <p>#{item.id}</p>
+                  <p className="absolute top-2 right-4 text-sm text-gray-600">
+                    #{item.id}
+                  </p>
                 </div>
                 <p>Size: {item.size}</p>
                 <p className="text-slate-500 line-clamp-1">
                   {item.description}
                 </p>
-                <div>
+                <div className="flex items-center gap-20">
                   <p className="font-semibold">
                     {' '}
                     Price: {item.price.toLocaleString('VN-vi')}đ
                   </p>
-                  <div className="flex pt-10">
+                  <div className="flex justify-end pt-2 gap-2 absolute right-2 bottom-2">
                     <EditIcon
                       onClick={() => handleClickOpen(item)}
                       className="cursor-pointer text-blue-300 hover:text-blue-500"

@@ -1,5 +1,5 @@
 import axios from "axios";
-export const apiUpdateCategories = async (args:{id:string,name:string,image:string,imagefile:string} ,token: any) => {
+export const apiUpdateCategories = async (args:{id:string,name:string,image:string,imagefile:File} ,token: any) => {
     const url = `${process.env.REACT_APP_API_URL}/api/category/update`;
   
     const config = {
