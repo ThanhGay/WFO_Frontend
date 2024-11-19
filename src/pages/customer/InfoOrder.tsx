@@ -9,7 +9,6 @@ import { useAppSelector } from '../../redux/hook';
 interface OrderDetail {
   productId: number;
   productName: string;
-  productImage: string;
   quantity: number;
   unitPrice: number;
 }
@@ -105,7 +104,9 @@ function InfoOrder() {
                   <p className="font-medium">{user?.fullName}</p>
                   <p className="pl-3 text-slate-400">{user?.phone}</p>
                 </div>
-                <p className="text-sm text-slate-600">{user?.address}</p>
+                <p className="text-sm text-slate-600">
+                  {user?.address}
+                </p>
               </div>
             </div>
           </div>
@@ -119,11 +120,7 @@ function InfoOrder() {
               key={index}
               className="shadow-md w-full rounded-md flex gap-3 mb-3"
             >
-              <img
-                className="w-20 h-20 rounded-lg"
-                src={process.env.REACT_APP_API_URL + item.productImage}
-                alt="Product"
-              />
+              <img className="w-20 h-20" src={Fish} alt="Product" />
               <div>
                 <p className="text-lg font-semibold">{item.productName}</p>
                 <div className="flex w-[220px] justify-between">

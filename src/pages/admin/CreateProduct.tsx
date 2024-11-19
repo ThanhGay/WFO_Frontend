@@ -22,7 +22,7 @@ type FormValueProps = {
   productPrice: number;
   productSize: string;
   productImage: File | undefined;
-  productCategory: string;
+  productCategory: number | undefined;
 };
 
 interface Category {
@@ -37,28 +37,16 @@ interface Category {
 function CreateProduct() {
   const [form] = Form.useForm();
   const { TextArea } = Input;
-  const navigate = useNavigate();
-
+  const [categories, setCategories] = useState<Category[]>([]);
   const { token } = useAppSelector((state) => state.authState);
-
   const [imageUrl, setImageUrl] = useState<string>();
   const [imageFile, setImageFile] = useState<string>('');
 
-  const [categories, setCategories] = useState<any[]>([]);
-  useEffect(() => {
-    (async () => {
-      const dataRes = await apiCategories();
-      if (dataRes) {
-        setCategories(dataRes.items);
-      }
-    })();
-  }, [token]);
-
-  const beforeUpload = (file: FileType) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      alert('You can only upload JPG/PNG file!');
-    }
+  // const beforeUpload = (file: FileType) => {
+  //   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  //   if (!isJpgOrPng) {
+  //     alert('You can only upload JPG/PNG file!');
+  //   }
 
   //   return isJpgOrPng;
   // };
@@ -92,14 +80,14 @@ function CreateProduct() {
         price: values.productPrice,
         size: values.productSize,
         imageFile: values.productImage,
-        categoryId: parseInt(values.productCategory)
+        categoryId: values.productCategory
       },
       token
     );
     if (dataRes) {
       alert('Thanh cong');
-      navigate(-1);
     }
+    console.log('data', dataRes);
   };
   useEffect(() => {
     (async () => {
@@ -156,15 +144,13 @@ function CreateProduct() {
             ]}
           />
         </Form.Item>
-        <Form.Item name={'productCategory'} label="Phân loại">
+        <Form.Item name={'productCategory'} label="Category">
           <Select
-            placeholder="Chọn phân loại sản phẩm"
-            options={categories.map((item: any) => {
-              return {
-                value: item.id,
-                label: item.name
-              };
-            })}
+            placeholder=" Enter Category"
+            options={categories.map((category) => ({
+              value: category.id,
+              label: category.name
+            }))}
           />
         </Form.Item>
        
@@ -189,7 +175,6 @@ function CreateProduct() {
       </Form>
     </div>
   );
-}
 }
 
 export default CreateProduct;
