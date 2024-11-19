@@ -22,7 +22,7 @@ type FormValueProps = {
   productPrice: number;
   productSize: string;
   productImage: File | undefined;
-  productCategory: number | undefined;
+  productCategory: string;
 };
 
 interface Category {
@@ -35,6 +35,7 @@ interface Category {
 }
 
 function CreateProduct() {
+  const navigate = useNavigate()
   const [form] = Form.useForm();
   const { TextArea } = Input;
   const [categories, setCategories] = useState<Category[]>([]);
