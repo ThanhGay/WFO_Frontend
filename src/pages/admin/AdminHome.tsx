@@ -39,9 +39,6 @@ function AdminHome() {
     navigate(path);
   };
 
-  const toggleProductMenu = () => {
-    setShowProductMenu(!showProductMenu);
-  };
 
   return (
     <div>
@@ -49,7 +46,7 @@ function AdminHome() {
         <img alt='logo' className='h-16 w-16' src={Logo} />
         <p className='font-semibold'>ADMIN</p>
         <div className='flex items-center gap-3'>
-          <img alt='avatar' className='size-4' src={Profile} onClick={() =>{navigate('/profile')}} />
+          <img alt='avatar' className='size-4 ' src={Profile} onClick={() =>{navigate('/profile')}} />
         </div>
       </div>
 
@@ -59,40 +56,13 @@ function AdminHome() {
         </div>
       </div>
 
-      <div className=" flex gap-6 justify-center">
+      <div className=" flex gap-3 justify-center">
         <button
-          onClick={toggleProductMenu} 
+          onClick={() => handleNavigate('/product')} 
           className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
         >
           Product
         </button>
-
-        {showProductMenu && (
-          <div
-            ref={productMenuRef} 
-            className="absolute left-7 bottom-[97px] bg-white shadow-lg rounded-lg p-4 w-30"
-          >
-            <button
-              onClick={() => handleNavigate('/admin/product/create')}
-              className="block py-2 px-4 text-blue-600 hover:bg-gray-200"
-            >
-              Add
-            </button>
-            <button
-              onClick={() => handleNavigate('/admin/product/update')}
-              className="block py-2 px-4 text-green-600 hover:bg-gray-200"
-            >
-              Update
-            </button>
-            <button
-              onClick={() => handleNavigate('/product/delete')}
-              className="block py-2 px-4 text-red-600 hover:bg-gray-200"
-            >
-              Delete
-            </button>
-          </div>
-        )}
-
         <button
           onClick={() => handleNavigate('/customer')}
           className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
@@ -104,6 +74,12 @@ function AdminHome() {
           className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-700"
         >
           Order
+        </button>
+        <button
+          onClick={() => handleNavigate('/categories')} 
+          className="bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+        >
+          Categories
         </button>
       </div>
       <p className='text-xl px-3 py-3'>Statistical</p>

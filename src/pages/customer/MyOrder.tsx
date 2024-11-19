@@ -136,7 +136,7 @@ function MyOrder() {
               fontWeight: 'normal'
             },
             '& .Mui-selected': {
-              color: '#FF6600',
+              color: '#FF7622',
               fontWeight: 'bold'
             }
           }}
@@ -164,8 +164,8 @@ function MyOrder() {
           >
             {order.filter((item) => [0, 1, 2].includes(item.status)).length ===
             0 ? (
-              <div className=" flex flex-col justify-center py-10 items-center">
-                <img className="size-36" src={No_order} />
+              <div className=" flex flex-col justify-center py-10 items-center opacity-30">
+                <img className="size-36 " src={No_order} />
                 <p className="text-lg font-medium text-gray-500">
                   You have no on going orders.
                 </p>
