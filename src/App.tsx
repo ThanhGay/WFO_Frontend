@@ -23,12 +23,15 @@ import FoodDetails from './pages/customer/FoodDetails';
 import Cart from './pages/customer/Cart';
 import Payment from './pages/customer/Payment';
 import ResetPW from './pages/ResetPW';
-import UpdateProduct from './pages/admin/UpdateProduct';
 import { usePageAuth } from './utils/hooks';
 import OrderSuccess from './pages/customer/OrderSuccess';
 import EditAdress from './pages/customer/EditAdress';
 import MyOrder from './pages/customer/MyOrder';
 import InfoOrder from './pages/customer/InfoOrder';
+import Product from './pages/admin/Product';
+import Categories from './pages/admin/Categories';
+import AddCategories from './pages/admin/AddCategories';
+import ProductEdit from './pages/admin/ProductEdit';
 
 function App() {
   // usePageAuth()
@@ -54,14 +57,16 @@ function App() {
       <Route path="/editaddress" element={<EditAdress />} />
       <Route path="/myorder" element={<MyOrder />} />
       <Route path="/myorder/infomationorder" element={<InfoOrder />} />
+      <Route path="/product" element={<Product />} />
+      <Route path="/productedit" element={<ProductEdit />} />
+      <Route path="/categories" element={<Categories />} />
 
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/product/create" element={<AdminAddProduct />} />
-      <Route path="/admin/product/update" element={<UpdateProduct />} />
+      <Route path="/admin/categories/create" element={<AddCategories />} />
       <Route path="/admin/report" element={<AdminReport />} />
       <Route path="/admin/customer" element={<AdminListCustomer />} />
       <Route path="/admin/order" element={<AdminListOrder />} />
-
     </Routes>
   );
 }
