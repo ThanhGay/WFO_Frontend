@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { sendPostFormDataWithToken } from '../utils';
+import { getWithToken, sendPostFormDataWithToken } from '../utils';
 
 export const apiCreateOrder = async (
   args: { cartIds: number[] },
@@ -81,4 +81,49 @@ export const apiCancelOrder = async (args: {
   const res = await axios.delete(url, config);
 
   return res;
+};
+
+export const apiTransferOrderToCarrier = async (args: {
+  orderId: string;
+  token: string;
+}) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/order/shipping`;
+
+  return sendPostFormDataWithToken({
+    url: url,
+    data: { orderId: args.orderId },
+    token: args.token
+  });
+};
+
+export const apiAdminConfirmOrder = async (args: {
+  orderId: string;
+  token: string;
+}) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/order/confirm`;
+
+  return sendPostFormDataWithToken({
+    url: url,
+    data: { orderId: args.orderId },
+    token: args.token
+  });
+};
+
+export const apiDoneOrder = async (args: {
+  orderId: string;
+  token: string;
+}) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/order/finish`;
+
+  return sendPostFormDataWithToken({
+    url: url,
+    data: { orderId: args.orderId },
+    token: args.token
+  });
+};
+
+export const apiGetAllOrders = async (token: string) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/order/all`;
+
+  return getWithToken({url, token})
 };

@@ -7,4 +7,6 @@ export { default as MenuProfile } from './customer/MenuProfile';
 export { default as Profile } from './customer/Profile';
 export { default as AdminHome } from './admin/AdminHome';
 export { default as AdminReport } from './admin/AdminReport';
+export { default as AdminListCustomer } from './admin/AdminListCustomer';
+export { default as AdminListOrder } from './admin/AdminListOrder';
 export { default as AdminAddProduct } from './admin/CreateProduct';

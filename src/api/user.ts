@@ -25,3 +25,17 @@ export const apiUpdateUser = async (
 
   return res;
 };
+
+export const apiGetAllUsers = async () => {
+  const url = `${process.env.REACT_APP_API_URL}/api/user/all`;
+
+  const config = {
+    headers: {
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const {data} = await axios.get(url, config);
+
+  return data ?? {};
+};

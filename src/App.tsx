@@ -9,7 +9,9 @@ import {
   NoPage,
   MenuProfile,
   Profile,
-  Signup
+  Signup,
+  AdminListCustomer,
+  AdminListOrder
 } from './pages';
 import './App.css';
 import HomeDetails from './pages/customer/HomeDetails';
@@ -48,16 +50,18 @@ function App() {
       <Route path="/homedetails/food/fooddetails" element={<FoodDetails />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/payment" element={<Payment />} />
-      <Route path="/ordersuccess" element={<OrderSuccess/>} />
-      <Route path="/editaddress" element={<EditAdress/>} />
+      <Route path="/ordersuccess" element={<OrderSuccess />} />
+      <Route path="/editaddress" element={<EditAdress />} />
       <Route path="/myorder" element={<MyOrder />} />
       <Route path="/myorder/infomationorder" element={<InfoOrder />} />
 
+      <Route path="/admin" element={<AdminHome />} />
       <Route path="/admin/product/create" element={<AdminAddProduct />} />
       <Route path="/admin/product/update" element={<UpdateProduct />} />
-      <Route path="/admin" element={<AdminHome />}>
-        <Route path="report" element={<AdminReport />} />
-      </Route>
+      <Route path="/admin/report" element={<AdminReport />} />
+      <Route path="/admin/customer" element={<AdminListCustomer />} />
+      <Route path="/admin/order" element={<AdminListOrder />} />
+
     </Routes>
   );
 }
