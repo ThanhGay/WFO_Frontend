@@ -5,6 +5,7 @@ import {
   apiCancelOrder,
   apiDoneOrder,
   apiGetAllOrders,
+  apiGetReport,
   apiTransferOrderToCarrier
 } from '../../api/order';
 
@@ -17,6 +18,7 @@ type REF_STATE = {
 type AdminState = {
   listCustomer: REF_STATE;
   listOrder: REF_STATE;
+  report: REF_STATE;
 };
 
 const initialState: AdminState = {
@@ -29,6 +31,11 @@ const initialState: AdminState = {
     data: [],
     isError: false,
     isLoading: false
+  },
+  report: {
+    data: [],
+    isLoading: false,
+    isError: false
   }
 };
 
@@ -47,20 +54,36 @@ export const getListOrder = createAsyncThunk(
   }
 );
 
+export const getReport = createAsyncThunk(
+  'admin/report',
+  async (args: { startDate: string; endDate: string; token: string }) => {
+    const { startDate, endDate, token } = args;
+
+    const dataRes = await apiGetReport(
+      { startDate: startDate, endDate: endDate },
+      token
+    );
+
+    return dataRes;
+  }
+);
+
 const AdminSlice = createSlice({
   name: 'admin',
   initialState,
   reducers: {
     deleteCustomer: (state, action: PayloadAction<any>) => {
-      const customerId = action.payload
+      const customerId = action.payload;
 
-      const updatedCustomers = [...state.listCustomer.data]
-      const customerIndex = updatedCustomers.findIndex((user) => user.id === customerId)
+      const updatedCustomers = [...state.listCustomer.data];
+      const customerIndex = updatedCustomers.findIndex(
+        (user) => user.id === customerId
+      );
 
-      if(customerIndex !== -1) {
+      if (customerIndex !== -1) {
         updatedCustomers[customerIndex].isBanned = true;
 
-        state.listCustomer.data = updatedCustomers
+        state.listCustomer.data = updatedCustomers;
       }
     },
     confirmOrder: (state, action: PayloadAction<any>) => {
@@ -149,7 +172,21 @@ const AdminSlice = createSlice({
       .addCase(getListOrder.rejected, (state) => {
         state.listOrder.isLoading = false;
         state.listOrder.isError = true;
-      });
+      })
+      .addCase(getReport.pending, (state) => {
+        state.report.isLoading = true;
+        state.report.isError = false;
+      })
+      .addCase(getReport.fulfilled, (state, action: PayloadAction<any>) => {
+        state.report.data = action.payload;
+        state.report.isLoading = false;
+        state.report.isError = false;
+      })
+      .addCase(getReport.rejected, (state) => {
+        state.report.isLoading = false;
+        state.report.isError = true;
+      })
+      ;
   }
 });
 

@@ -18,6 +18,7 @@ import {
   NotificationIcon,
   PaymentCardIcon
 } from '../../assets/icons';
+import { getListCustomer, getListOrder, getReport } from '../../redux/features/adminSlice';
 
 const RenderItem = ({
   title,
@@ -48,11 +49,20 @@ const RenderItem = ({
 function MenuProfile() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.authState);
+  const { user, token } = useAppSelector((state) => state.authState);
 
   const [messageAntd, contextHolder] = message.useMessage();
-  const handleSwitch = () => {
+  const handleSwitch = async () => {
     if (user?.type === 'Admin') {
+      dispatch(getListCustomer());
+      dispatch(getListOrder(token));
+      dispatch(
+        getReport({
+          token: token,
+          startDate: '2024-01-01',
+          endDate: '2024-12-31'
+        })
+      );
       navigate('/admin');
     } else {
       messageAntd.error('Bạn không có quyền truy cập');

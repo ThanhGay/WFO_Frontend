@@ -125,5 +125,15 @@ export const apiDoneOrder = async (args: {
 export const apiGetAllOrders = async (token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/order/all`;
 
-  return getWithToken({url, token})
+  return getWithToken({ url, token });
+};
+
+export const apiGetReport = async (
+  args: { startDate: string; endDate: string },
+  token: string
+) => {
+  const { startDate, endDate } = args;
+  const url = `${process.env.REACT_APP_API_URL}/api/order/statistical?startDate=${startDate}&endDate=${endDate}`;
+
+  return getWithToken({ url, token });
 };

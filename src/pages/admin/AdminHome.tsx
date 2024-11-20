@@ -1,16 +1,22 @@
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { DatePicker } from 'antd';
+
 import Logo from '../../img/logo 1.png';
 import Profile from '../../img/user.png';
-import Logout from '../../img/power.png';
 import Kimpap from '../../img/1.jpg';
 import Noodle from '../../img/2.jpg';
 import Pho from '../../img/3.jpg';
 import Burger from '../../img/4.jpg';
 import Pizza from '../../img/5.jpg';
-import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useState, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
-import { getListCustomer, getListOrder } from '../../redux/features/adminSlice';
+
 import LineChart from '../../components/chart';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { RangePickerProps } from 'antd/es/date-picker';
+import { getReport } from '../../redux/features/adminSlice';
+import dayjs from 'dayjs';
+
+const { RangePicker } = DatePicker;
 
 function AdminHome() {
   const images = [Kimpap, Noodle, Pho, Pizza, Burger];
@@ -20,13 +26,9 @@ function AdminHome() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showProductMenu, setShowProductMenu] = useState<boolean>(false);
 
-  // load list customer, order
-  const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.authState);
-  useEffect(() => {
-    dispatch(getListCustomer());
-    dispatch(getListOrder(token));
-  }, [token]);
+  const { data: reportData } = useAppSelector(
+    (state) => state.adminState.report
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,6 +53,22 @@ function AdminHome() {
 
   const handleNavigate = (path: string) => {
     navigate(path);
+  };
+
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.authState);
+
+  const handleChange: RangePickerProps['onChange'] = async (
+    date,
+    dateString
+  ) => {
+    dispatch(
+      getReport({
+        startDate: dateString[0],
+        endDate: dateString[1],
+        token: token
+      })
+    );
   };
 
   return (
@@ -101,17 +119,18 @@ function AdminHome() {
         >
           Customer
         </button>
-       
       </div>
-      <div>
-        <p className="text-xl px-3 py-3">Statistical</p>
-        <LineChart
-          dataPoints={[
-            { date: '2024-11-17', amount: 1635000 },
-            { date: '2024-11-18', amount: 2070000 },
-            { date: '2024-11-20', amount: 1950000 }
-          ]}
-        ></LineChart>
+
+      {/* Charts */}
+      <div className="px-2">
+        <p className="text-xl px-3 py-3 font-semibold">Statistical</p>
+        <RangePicker
+          className="mb-4"
+          placement="topLeft"
+          onChange={(dates, dateStrings) => handleChange(dates, dateStrings)}
+          defaultValue={[dayjs('2024-01-01'), dayjs('2024-12-31')]}
+        />
+        <LineChart dataPoints={reportData} />
       </div>
     </div>
   );
