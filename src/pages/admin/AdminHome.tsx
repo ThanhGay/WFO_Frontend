@@ -28,8 +28,6 @@ function AdminHome() {
     dispatch(getListOrder(token));
   }, [token]);
 
-
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -55,14 +53,20 @@ function AdminHome() {
     navigate(path);
   };
 
-
   return (
     <div>
       <div className="shadow-md h-16 rounded flex items-center justify-between">
-        <img alt='logo' className='h-16 w-16' src={Logo} />
-        <p className='font-semibold'>ADMIN</p>
-        <div className='flex items-center gap-3'>
-          <img alt='avatar' className='size-4 ' src={Profile} onClick={() =>{navigate('/profile')}} />
+        <img alt="logo" className="h-16 w-16" src={Logo} />
+        <p className="font-semibold">ADMIN</p>
+        <div className="flex justify-center w-16 ">
+          <img
+            alt="avatar"
+            className="size-4  "
+            src={Profile}
+            onClick={() => {
+              navigate('/profile');
+            }}
+          />
         </div>
       </div>
 
@@ -72,18 +76,18 @@ function AdminHome() {
         </div>
       </div>
 
-      <div className=" flex gap-3 justify-center">
+      <div className=" flex gap-2 justify-center  ">
         <button
-          onClick={() => handleNavigate('/product')} 
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+          onClick={() => handleNavigate('/categories')}
+          className="bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
         >
-          Product
+          Categories
         </button>
         <button
-          onClick={() => handleNavigate('/admin/customer')}
-          className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          onClick={() => handleNavigate('/product')}
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 "
         >
-          Customer
+          Product
         </button>
         <button
           onClick={() => handleNavigate('/admin/order')}
@@ -92,20 +96,22 @@ function AdminHome() {
           Order
         </button>
         <button
-          onClick={() => handleNavigate('/categories')} 
-          className="bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+          onClick={() => handleNavigate('/admin/customer')}
+          className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
         >
-          Categories
+          Customer
         </button>
+       
       </div>
       <div>
         <p className="text-xl px-3 py-3">Statistical</p>
-        <LineChart dataPoints={[
-  { date: "2024-11-17", amount: 1635000 },
-  { date: "2024-11-18", amount: 2070000 },
-  { date: "2024-11-20", amount: 1950000 },
-]}></LineChart>
-
+        <LineChart
+          dataPoints={[
+            { date: '2024-11-17', amount: 1635000 },
+            { date: '2024-11-18', amount: 2070000 },
+            { date: '2024-11-20', amount: 1950000 }
+          ]}
+        ></LineChart>
       </div>
     </div>
   );
