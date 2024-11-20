@@ -11,7 +11,7 @@ import { apiAddCart } from '../../api/cart';
 import { useAppSelector } from '../../redux/hook';
 
 function FoodDetails() {
-  const {token} = useAppSelector((state) => state.authState)
+  const { token } = useAppSelector((state) => state.authState);
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,17 +30,23 @@ function FoodDetails() {
     fetchProductDetail();
   }, [id]);
 
-
   // console.log('token:',token);
-  
+
   const handleButton = async () => {
-    const res = await apiAddCart({productId: productDetail.id, quantity: quantity, note: null}, token)
+    const res = await apiAddCart(
+      {
+        productId: productDetail.id,
+        quantity: quantity,
+        note: null,
+        isAvailable: productDetail.isAvailable
+      },
+      token
+    );
     if (res.status === 200) {
-      alert('Them san pham thanh cong')
+      alert('Them san pham thanh cong');
     } else {
-      alert("Errrrrrrrrr")
+      alert('Errrrrrrrrr');
     }
-  
   };
 
   return (
@@ -76,7 +82,9 @@ function FoodDetails() {
 
       <div className="fixed bottom-10 w-full  ">
         <div className="flex items-center justify-between bg-gray-100 p-2 rounded-lg max-w-screen-md mx-auto ">
-          <span className="font-semibold text-xl">{totalPrice.toLocaleString('VN-vi')}đ</span>
+          <span className="font-semibold text-xl">
+            {totalPrice.toLocaleString('VN-vi')}đ
+          </span>
           <div className="flex items-center rounded-full bg-black p-2 ">
             <button
               className="w-8 h-8 rounded-full bg-gray-700 text-white font-bold"
@@ -101,15 +109,23 @@ function FoodDetails() {
         className="btn-submit"
         size="large"
         style={{
-          width: '100%',                  // Nút chiếm toàn bộ chiều ngang
-          backgroundColor: '#FF7622',
-          bottom: '0',                    // Cố định ở dưới cùng màn hình
-          position: 'fixed',              // Sử dụng fixed để nút luôn cố định
-          left: '0', 
+          width: '100%',
+          backgroundColor: productDetail.isAvailable ? '#FF7622' : '#CCC',
+          bottom: '0',
+          position: 'fixed',
+          left: '0',
+          cursor: productDetail.isAvailable ? 'pointer' : 'not-allowed' 
         }}
-        onClick={handleButton}
+        disabled={!productDetail.isAvailable} 
+        onClick={() => {
+          if (productDetail.isAvailable) {
+            handleButton();
+          } else {
+            alert('OUT OF STOCK');
+          }
+        }}
       >
-        ADD TO CART
+        {productDetail.isAvailable ? 'ADD TO CART' : 'OUT OF STOCK'}
       </Button>
     </div>
   );

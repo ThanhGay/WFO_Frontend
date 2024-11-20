@@ -1,11 +1,12 @@
 import axios from 'axios';
-export const apiAddCart = async (args: { productId: number; quantity: number; note:string | null; }, token: string) => {
+export const apiAddCart = async (args: { productId: number; quantity: number; note:string | null;isAvailable:boolean }, token: string) => {
   const url = `${process.env.REACT_APP_API_URL}/api/cart/add-to-cart`;
 
   const reqBody = {
     productId: args.productId,
     quantity: args.quantity,
-    note: args.note
+    note: args.note,
+    isAvailable:args.isAvailable
   };
   const config = {
     headers: {
