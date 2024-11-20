@@ -1,4 +1,5 @@
-import { Button, Col, Collapse, CollapseProps, Row } from 'antd';
+import { useState } from 'react';
+import { Button, Col, Collapse, CollapseProps, Modal, Row } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
@@ -16,10 +17,26 @@ function AdminListCustomer() {
     (state) => state.adminState.listCustomer
   );
 
+  const [openModal, setOpenModal] = useState(false);
+  const [current, setCurrent] = useState(-1);
+
+  const handleOpenModal = (customerId: number) => {
+    setCurrent(customerId);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setCurrent(-1);
+    setOpenModal(false);
+  };
+
   const handleDelete = async (customerId: number) => {
     try {
       const dataRes = await apiDeleteCustomer(customerId, token);
-      if (dataRes) dispatch(deleteCustomer(customerId));
+      if (dataRes) {
+        dispatch(deleteCustomer(customerId));
+        handleCloseModal();
+      }
     } catch (error: any) {
       alert(error.response.data);
     }
@@ -99,7 +116,7 @@ function AdminListCustomer() {
               style={{ backgroundColor: 'red' }}
               type="primary"
               icon={<StopOutlined />}
-              onClick={() => handleDelete(user?.id)}
+              onClick={() => handleOpenModal(user?.id)}
             />
           )}
         </div>
@@ -110,6 +127,16 @@ function AdminListCustomer() {
     <div className="px-5 py-3">
       <BackHeader title="Customers" />
       <Collapse accordion items={items} />
+      <Modal
+        title="Ban account permanantly"
+        open={openModal}
+        okText="Confirm"
+        cancelText="Cancel"
+        onCancel={handleCloseModal}
+        onOk={() => handleDelete(current)}
+      >
+        Do you want to delete this account?
+      </Modal>
     </div>
   );
 }
