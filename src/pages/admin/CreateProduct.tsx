@@ -89,7 +89,8 @@ function CreateProduct() {
     );
     if (dataRes) {
       alert('Thanh cong');
-      console.log('data', dataRes);
+      // console.log('data', dataRes);
+      form.resetFields()
     }
   };
 
