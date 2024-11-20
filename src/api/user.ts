@@ -35,7 +35,22 @@ export const apiGetAllUsers = async () => {
     }
   };
 
-  const {data} = await axios.get(url, config);
+  const { data } = await axios.get(url, config);
+
+  return data ?? {};
+};
+
+export const apiDeleteCustomer = async (customerId: number, token: string) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/user/ban/${customerId}`;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'any_value'
+    }
+  };
+
+  const { data } = await axios.delete(url, config);
 
   return data ?? {};
 };
