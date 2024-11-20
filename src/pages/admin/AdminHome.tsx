@@ -97,7 +97,7 @@ function AdminHome() {
       <div className=" flex gap-2 justify-center  ">
         <button
           onClick={() => handleNavigate('/categories')}
-          className="bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+          className="bg-cyan-500 text-white py-2 px-2 rounded-lg hover:bg-blue-700"
         >
           Categories
         </button>
@@ -115,7 +115,7 @@ function AdminHome() {
         </button>
         <button
           onClick={() => handleNavigate('/admin/customer')}
-          className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          className="bg-green-500 text-white py-2 px-2 rounded-lg hover:bg-green-700"
         >
           Customer
         </button>
