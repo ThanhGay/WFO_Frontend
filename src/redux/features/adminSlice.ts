@@ -51,8 +51,17 @@ const AdminSlice = createSlice({
   name: 'admin',
   initialState,
   reducers: {
-    deleteCustomer: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
+    deleteCustomer: (state, action: PayloadAction<any>) => {
+      const customerId = action.payload
+
+      const updatedCustomers = [...state.listCustomer.data]
+      const customerIndex = updatedCustomers.findIndex((user) => user.id === customerId)
+
+      if(customerIndex !== -1) {
+        updatedCustomers[customerIndex].isBanned = true;
+
+        state.listCustomer.data = updatedCustomers
+      }
     },
     confirmOrder: (state, action: PayloadAction<any>) => {
       const orderId = action.payload;
