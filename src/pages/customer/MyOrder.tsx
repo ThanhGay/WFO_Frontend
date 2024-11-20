@@ -136,7 +136,7 @@ function MyOrder() {
               fontWeight: 'normal'
             },
             '& .Mui-selected': {
-              color: '#FF7622',
+              color: '#FF76',
               fontWeight: 'bold'
             }
           }}

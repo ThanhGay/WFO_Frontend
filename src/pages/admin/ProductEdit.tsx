@@ -44,6 +44,7 @@ interface Product {
   size: string;
   categoryId: string;
   price: string;
+  isAvailable:boolean;
 }
 
 interface Category {
@@ -218,7 +219,7 @@ function ProductEdit() {
         </div>
       </div>
       <div className="  ">
-        {product.map((item: any) => (
+        {product.filter(item => item.isAvailable === true).map((item: any) => (
           <div className="overflow-auto  gap-3 py-4">
             <div className="bg-slate-300 w-full h-28  rounded-lg flex gap-4 relative">
               <img

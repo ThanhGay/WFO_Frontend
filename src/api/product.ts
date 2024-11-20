@@ -52,31 +52,49 @@ export const apiPostProduct = async (
     name: string;
     description: string;
     price: number;
-    imageFile?: File;
+    imageFile: File;
     size: string;
     categoryId?: number;
   },
   token: string
 ) => {
   const url = `${process.env.REACT_APP_API_URL}/api/product/add`;
+  const formData = new FormData();
+    formData.append("name", args.name);
+    formData.append("description", args.description);
+    formData.append("price", args.price.toString());
+    formData.append("size", args.size);
+    formData.append("categoryId", args.categoryId?.toString() || "");
+    formData.append("imageFile", args.imageFile);
 
-  const { name, description, price, imageFile, size, categoryId } = args;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'any_value'
+      }
+    };
 
-  if (categoryId && imageFile) {
-    return sendPostFormDataWithToken({ url, data: args, token });
-  } else if (!categoryId && imageFile) {
-    return sendPostFormDataWithToken({
-      url,
-      data: { name, description, price, imageFile, size },
-      token
-    });
-  } else if (!categoryId && !imageFile) {
-    return sendPostFormDataWithToken({
-      url,
-      data: { name, description, price, size },
-      token
-    });
-  }
+    const res = await axios.post(url,formData,config);
+  
+    return res;
+
+
+
+  // if (categoryId && imageFile) {
+  //   return sendPostFormDataWithToken({ url, data: args, token });
+  // } else if (!categoryId && imageFile) {
+  //   return sendPostFormDataWithToken({
+  //     url,
+  //     data: { name, description, price, imageFile, size },
+  //     token
+  //   });
+  // } else if (!categoryId && !imageFile) {
+  //   return sendPostFormDataWithToken({
+  //     url,
+  //     data: { name, description, price, size },
+  //     token
+  //   });
+  // }
 };
 
 export const apiProductGetID = async (ID: any) => {

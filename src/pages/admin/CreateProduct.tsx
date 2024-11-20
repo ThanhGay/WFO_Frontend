@@ -21,7 +21,7 @@ type FormValueProps = {
   productDescription: string;
   productPrice: number;
   productSize: string;
-  productImage: File | undefined;
+  imageFile: any;
   productCategory: number | undefined;
 };
 
@@ -35,12 +35,12 @@ interface Category {
 }
 
 function CreateProduct() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const { TextArea } = Input;
   const [categories, setCategories] = useState<Category[]>([]);
   const { token } = useAppSelector((state) => state.authState);
-  const [imageUrl, setImageUrl] = useState<string>();
+  // const [imageUrl, setImageUrl] = useState<string>();
   const [imageFile, setImageFile] = useState<string>('');
 
   // const beforeUpload = (file: FileType) => {
@@ -74,22 +74,25 @@ function CreateProduct() {
   // };
 
   const handleSubmit = async (values: FormValueProps) => {
+    console.log(values);
+
     const dataRes = await apiPostProduct(
       {
         name: values.productName,
         description: values.productDescription,
         price: values.productPrice,
         size: values.productSize,
-        imageFile: values.productImage,
+        imageFile: values.imageFile.file,
         categoryId: values.productCategory
       },
       token
     );
     if (dataRes) {
       alert('Thanh cong');
+      console.log('data', dataRes);
     }
-    console.log('data', dataRes);
   };
+
   useEffect(() => {
     (async () => {
       const dataRes = await apiCategories();
@@ -154,11 +157,8 @@ function CreateProduct() {
             }))}
           />
         </Form.Item>
-       
-        <Form.Item
-          label="Image"
-          name={'imageFile'}
-        >
+
+        <Form.Item label="Image" name={'imageFile'}>
           <Upload
             name="file"
             accept="image/*"
