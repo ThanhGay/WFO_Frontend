@@ -100,7 +100,7 @@ useEffect(()=>{
         </div>
       </div>
       <p>Popular Burger</p>
-      <div className="  grid grid-cols-2 gap-4">
+      <div className="items-center grid grid-cols-2 gap-4 place-items-center">
         {product.map((item: any) => (
           <CartFood
           key={item.id}

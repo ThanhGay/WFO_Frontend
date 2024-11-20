@@ -12,15 +12,17 @@ import Burger1 from '../../img/Burger1.png';
 import CardRestaurant from '../../components/card/CardRestaurant';
 import Restaurant from '../../img/Restaurant.png';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { apiProduct, apiSearch } from '../../api/product';
+import { apiCategories, apiProduct, apiSearch } from '../../api/product';
 import CardCategory from '../../components/card/CardCategory';
-import Cart from '../../img/basket.png'
+import Cart from '../../img/basket.png';
 
 function FoodSearch() {
   const [option, setOption] = useState('');
   const [product, setProduct] = useState([]);
+  const [categories, setCategories] = useState([]);
   const location = useLocation();
   const { food } = location.state || {};
+  const { category } = location.state || {};
   const callAPI = async () => {
     const dataRes = await apiSearch(food);
     setProduct(dataRes.items);
@@ -29,8 +31,26 @@ function FoodSearch() {
     callAPI();
   }, [food]);
 
+  const API = async (selectedCategory?: string) => {
+    const dataRes = await apiProduct(selectedCategory || category);
+    setProduct(dataRes.items);
+  };
+  useEffect(() => {
+    callAPI();
+  }, [category]);
+
+  useEffect(() => {
+    const fetchOption = async () => {
+      const categoryRes = await apiCategories();
+      setCategories(categoryRes.items);
+    };
+    fetchOption();
+  }, []);
+
   const handleChange = (event: SelectChangeEvent) => {
-    setOption(event.target.value as string);
+    const selectedCategory = event.target.value;
+    setOption(selectedCategory);
+    API(selectedCategory); // Fetch sản phẩm khi lựa chọn một danh mục
   };
 
   const navigate = useNavigate();
@@ -70,9 +90,11 @@ function FoodSearch() {
                 label="Option"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Burger</MenuItem>
-                <MenuItem value={20}>Pizza</MenuItem>
-                <MenuItem value={30}>Bread</MenuItem>
+                {categories.map((items: any) => (
+                  <MenuItem key={items.id} value={items.id}>
+                    {items.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
@@ -83,11 +105,15 @@ function FoodSearch() {
         </div>
       </div>
       <p>Popular Burger</p>
-      <div className="  grid grid-cols-2 gap-4">
+      <div className=" items-center grid grid-cols-2 gap-4 place-items-center">
         {product.map((item: any) => (
           <CartFood
-          key={item.id}
-            imageSrc={item?.image ? `${process.env.REACT_APP_API_URL}/${item.image}` : Burger1}
+            key={item.id}
+            imageSrc={
+              item?.image
+                ? `${process.env.REACT_APP_API_URL}/${item.image}`
+                : Burger1
+            }
             navigateTo={`/homedetails/food/fooddetails`}
             textSize={item.size}
             textMeal={item.name}
