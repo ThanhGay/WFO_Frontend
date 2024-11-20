@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { getListCustomer, getListOrder } from '../../redux/features/adminSlice';
+import LineChart from '../../components/chart';
 
 function AdminHome() {
   const images = [Kimpap, Noodle, Pho, Pizza, Burger];
@@ -97,7 +98,15 @@ function AdminHome() {
           Categories
         </button>
       </div>
-      <p className="text-xl px-3 py-3">Statistical</p>
+      <div>
+        <p className="text-xl px-3 py-3">Statistical</p>
+        <LineChart dataPoints={[
+  { date: "2024-11-17", amount: 1635000 },
+  { date: "2024-11-18", amount: 2070000 },
+  { date: "2024-11-20", amount: 1950000 },
+]}></LineChart>
+
+      </div>
     </div>
   );
 }
