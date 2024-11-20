@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { orange } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   apiDecreaseCart,
   apiDeleteCart,
@@ -205,7 +205,7 @@ function Cart() {
         )}
       </div>
 
-      <div className=" flex items-center gap-3 bg-slate-200 h-14 w-full bottom-10 rounded-lg absolute">
+      <div className="px-2 flex items-center gap-3 bg-slate-200 h-14 w-full bottom-10 rounded-lg absolute">
         <p className="font-thin text-slate-500 text-xs">TOTAL:</p>
         <span className="font-semibold text-xl">
           {totalPrice.toLocaleString('VN-vi')}

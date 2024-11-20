@@ -1,6 +1,5 @@
 import BackHeader from '../../components/header/BackHeader';
 import Address from '../../img/pin.png';
-import Fish from '../../img/Fish.png';
 import { Button, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { apiCancelOrder, apiConfirmReceiveOrder } from '../../api/order';
@@ -9,6 +8,7 @@ import { useAppSelector } from '../../redux/hook';
 interface OrderDetail {
   productId: number;
   productName: string;
+  productImage: string;
   quantity: number;
   unitPrice: number;
 }
@@ -40,12 +40,13 @@ function InfoOrder() {
 
         setTimeout(() => {
           navigate('/homedetails');
-        }, 3000);
+        }, 1000);
       }
     } catch (err: any) {
       alert(err.response.data);
     }
   };
+
   const handleCancel = async () => {
     try {
       const dataRes = await apiCancelOrder({
@@ -58,7 +59,7 @@ function InfoOrder() {
 
         setTimeout(() => {
           navigate('/myorder');
-        }, 2000);
+        }, 1000);
       }
     } catch (err: any) {
       alert(err.response.data);
@@ -68,32 +69,37 @@ function InfoOrder() {
   const statusText = (status: number) => {
     switch (status) {
       case 0:
-        return 'Created';
+        return { text: 'Created', color: '#FFB020' };
       case 1:
-        return 'Cooking';
+        return { text: 'Cooking', color: '#F6C000' };
       case 2:
-        return 'Ongoing';
+        return { text: 'Ongoing', color: '#2196F3' };
       case 3:
-        return 'Received';
+        return { text: 'Received', color: '#FF99FF' };
       case 5:
-        return 'Completed';
+        return { text: 'Completed', color: '#8BC34A' };
       case 10:
-        return 'Canceled';
+        return { text: 'Canceled', color: '#F44336' };
       default:
-        return 'Unknown';
+        return { text: 'Unknown', color: '#9E9E9E' };
     }
   };
+
   const total = orderDetails.details.reduce(
     (sum, item) => sum + item.quantity * item.unitPrice,
     0
   );
+  
   return (
     <div className="py-3 ">
       <BackHeader title="Infomation Order"></BackHeader>
       <div className="px-3 ">
         <div className="shadow-md rounded-md">
-          <h1 className="bg-green-600 text-slate-100 rounded-md px-3 p-3">
-            {statusText(orderDetails.status)}
+          <h1
+            className="text-slate-100 rounded-t-md px-3 p-3"
+            style={{ backgroundColor: statusText(orderDetails.status).color }}
+          >
+            {statusText(orderDetails.status).text}
           </h1>
           <div className="py-3 px-3">
             <h1 className="font-medium">Shipping Address</h1>
@@ -104,9 +110,7 @@ function InfoOrder() {
                   <p className="font-medium">{user?.fullName}</p>
                   <p className="pl-3 text-slate-400">{user?.phone}</p>
                 </div>
-                <p className="text-sm text-slate-600">
-                  {user?.address}
-                </p>
+                <p className="text-sm text-slate-600">{user?.address}</p>
               </div>
             </div>
           </div>
@@ -120,7 +124,11 @@ function InfoOrder() {
               key={index}
               className="shadow-md w-full rounded-md flex gap-3 mb-3"
             >
-              <img className="w-20 h-20" src={Fish} alt="Product" />
+              <img
+                className="w-20 h-20 rounded-lg"
+                src={process.env.REACT_APP_API_URL + item.productImage}
+                alt={item.productName}
+              />
               <div>
                 <p className="text-lg font-semibold">{item.productName}</p>
                 <div className="flex w-[220px] justify-between">

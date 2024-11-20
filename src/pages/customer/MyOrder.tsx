@@ -1,6 +1,6 @@
 import { Button, Modal } from 'antd';
 import BackHeader from '../../components/header/BackHeader';
-import Fish from '../../img/Fish.png';
+import MealBox from '../../img/MealBox.png';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, Tab, Tabs } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -25,18 +25,19 @@ interface OrderItem {
 
 function MyOrder() {
   const navigate = useNavigate();
-  const [tabValue, setTabValue] = useState(0);
-  const [order, setOrder] = useState<OrderItem[]>([]);
   const { token } = useAppSelector((state) => state.authState);
+
+  const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event: any, newValue: number) => {
     setTabValue(newValue);
   };
 
+  const [orders, setOrders] = useState<OrderItem[]>([]);
   useEffect(() => {
     const fetchMyOrder = async (token: string) => {
       try {
         const response = await apiGetMyOrder(token);
-        setOrder(response.data.items);
+        setOrders(response.data.items);
         console.log('don hang cua toi:', response.data);
       } catch (error) {
         console.error('Không thể lấy đơn hàng:', error);
@@ -44,6 +45,9 @@ function MyOrder() {
     };
     fetchMyOrder(token);
   }, [token]);
+
+  const [currentId, setCurrentId] = useState<number>(0);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleTrackOrder = async (id: number) => {
     try {
@@ -62,41 +66,8 @@ function MyOrder() {
   };
 
   const handleCancel = (orderId: number) => {
-    Modal.confirm({
-      title: 'Are you sure you want to cancel this order?',
-      content: 'This action cannot be undone.',
-      okText: 'Yes',
-      cancelText: 'No',
-      onOk: async () => {
-        try {
-          const response = await apiCancelOrder({
-            orderId: orderId.toString(),
-            token
-          });
-          if (response?.status === 200) {
-            console.log('Đơn hàng đã hủy:', response.data);
-            setOrder((prevOrders) =>
-              prevOrders.map((item) =>
-                item.id === orderId
-                  ? {
-                      ...item,
-                      status: 10,
-                      canceledAt: new Date().toISOString()
-                    }
-                  : item
-              )
-            );
-          } else {
-            console.error('Không thể hủy đơn hàng:', response?.data?.message);
-          }
-        } catch (error) {
-          console.error('Lỗi khi hủy đơn hàng:', error);
-        }
-      },
-      onCancel() {
-        console.log('Hủy bỏ hành động');
-      }
-    });
+    setCurrentId(orderId);
+    setOpenModal(true);
   };
 
   const statusText = (status: number) => {
@@ -162,7 +133,7 @@ function MyOrder() {
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
-            {order.filter((item) => [0, 1, 2].includes(item.status)).length ===
+            {orders.filter((item) => [0, 1, 2].includes(item.status)).length ===
             0 ? (
               <div className=" flex flex-col justify-center py-10 items-center opacity-30">
                 <img className="size-36 " src={No_order} />
@@ -171,7 +142,7 @@ function MyOrder() {
                 </p>
               </div>
             ) : (
-              order
+              orders
                 .filter((item) => [0, 1, 2].includes(item.status))
                 .slice()
                 .reverse()
@@ -189,8 +160,8 @@ function MyOrder() {
                       </div>
                       <div className="flex items-center gap-4">
                         <img
-                          src={Fish}
-                          alt="Fish"
+                          src={MealBox}
+                          alt="MealBox"
                           className="w-16 h-16 rounded-md"
                         />
                         <div>
@@ -252,7 +223,7 @@ function MyOrder() {
           <Card
             sx={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderRadius: 2 }}
           >
-            {order
+            {orders
               .filter((item) => [3, 5, 10].includes(item.status))
               .map((item, index) => (
                 <div key={index} className="py-2">
@@ -268,8 +239,8 @@ function MyOrder() {
                     </div>
                     <div className="flex items-center gap-4">
                       <img
-                        src={Fish}
-                        alt="Fish"
+                        src={MealBox}
+                        alt="MealBox"
                         className="w-16 h-16 rounded-md"
                       />
                       <div>
@@ -316,6 +287,43 @@ function MyOrder() {
           </Card>
         )}
       </Box>
+
+      <Modal
+        open={openModal}
+        title="Are you sure you want to cancel this order?"
+        okText="Yes"
+        cancelText="No"
+        onOk={async () => {
+          try {
+            const response = await apiCancelOrder({
+              orderId: currentId.toString(),
+              token
+            });
+            if (response?.status === 200) {
+              console.log('Đơn hàng đã hủy:', response.data);
+              setOrders((prevOrders) =>
+                prevOrders.map((item) =>
+                  item.id === currentId
+                    ? {
+                        ...item,
+                        status: 10,
+                        canceledAt: new Date().toISOString()
+                      }
+                    : item
+                )
+              );
+              setOpenModal(false);
+            } else {
+              console.error('Không thể hủy đơn hàng:', response?.data?.message);
+            }
+          } catch (error) {
+            console.error('Lỗi khi hủy đơn hàng:', error);
+          }
+        }}
+        onCancel={() => setOpenModal(false)}
+      >
+        <div>This action cannot be undone.</div>
+      </Modal>
     </div>
   );
 }

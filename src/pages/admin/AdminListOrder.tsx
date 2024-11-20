@@ -13,8 +13,6 @@ function AdminListOrder() {
   const listCompleted = listOrder.filter(
     (item: any) => item.status === 10 || item.status === 5
   );
-
-  console.log(listOrder);
   
 
   return (

@@ -218,8 +218,8 @@ function ProductEdit() {
         </div>
       </div>
       <div className="  ">
-        {product.map((item: any) => (
-          <div className="overflow-auto  gap-3 py-4">
+        {product.map((item: any, index: number) => (
+          <div key={index} className="overflow-auto  gap-3 py-4">
             <div className="bg-slate-300 w-full h-28  rounded-lg flex gap-4 relative">
               <img
                 className=" w-28 h-28 rounded-lg  "
