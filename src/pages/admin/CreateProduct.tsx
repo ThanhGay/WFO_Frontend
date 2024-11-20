@@ -22,7 +22,7 @@ type FormValueProps = {
   productPrice: number;
   productSize: string;
   productImage: File | undefined;
-  productCategory: string;
+  productCategory: number | undefined;
 };
 
 interface Category {
@@ -40,7 +40,6 @@ function CreateProduct() {
   const { TextArea } = Input;
   const [categories, setCategories] = useState<Category[]>([]);
   const { token } = useAppSelector((state) => state.authState);
-
   const [imageUrl, setImageUrl] = useState<string>();
   const [imageFile, setImageFile] = useState<string>('');
 
@@ -82,13 +81,12 @@ function CreateProduct() {
         price: values.productPrice,
         size: values.productSize,
         imageFile: values.productImage,
-        categoryId: parseInt(values.productCategory)
+        categoryId: values.productCategory
       },
       token
     );
     if (dataRes) {
       alert('Thanh cong');
-      navigate(-1);
     }
     console.log('data', dataRes);
   };

@@ -22,7 +22,6 @@ function SearchByName() {
       window.removeEventListener('keyup', handleSearch);
     };
   }, [search]);
-
   const handleSearch = async (e: any) => {
     if (e.keyCode === 13) {
       if (!search.trim()) {
@@ -43,9 +42,7 @@ function SearchByName() {
   };
 
   const handleButton = () => {
-    console.log('xxx');
-    
-    // navigate('/homedetails/food');
+    navigate('/homedetails/food');
   };
   const handleCart = () => {
     navigate('/cart');
@@ -156,19 +153,19 @@ function SearchByName() {
         <CardMeal
           imageSrc={Rice}
           textMeal="european Pizza"
-          navigateTo=""
+          navigateTo="/homedetails/food"
           textRestaurant="Peppe Pizzeria"
         ></CardMeal>
         <CardMeal
           imageSrc={Rice}
           textMeal="european Pizza"
-          navigateTo=""
+          navigateTo="/homedetails/food"
           textRestaurant="Peppe Pizzeria"
         ></CardMeal>
         <CardMeal
           imageSrc={Rice}
           textMeal="european Pizza"
-          navigateTo=""
+          navigateTo="/homedetails/food"
           textRestaurant="Peppe Pizzeria"
         ></CardMeal>
       </div>
